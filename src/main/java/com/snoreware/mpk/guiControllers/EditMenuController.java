@@ -130,23 +130,11 @@ public class EditMenuController implements Initializable {
 
     public void updateBusList(){
         wypelnienieBus.clear();
-        try {
-            BusEntity[] buses = Request.getBuses();
-            wypelnienieBus.addAll(Arrays.asList(buses));
-            busList.setItems(wypelnienieBus);
-        } catch (UnirestException e) {
-            e.printStackTrace();
-        }
+        FailuresController.updateBus(wypelnienieBus, busList);
     }
     public void updateTramList(){
         wypelnienieTram.clear();
-        try {
-            TramEntity[] trams = Request.getTrams();
-            wypelnienieTram.addAll(Arrays.asList(trams));
-            tramList.setItems(wypelnienieTram);
-        } catch (UnirestException e) {
-            e.printStackTrace();
-        }
+        FailuresController.updateTrams(wypelnienieTram, tramList);
     }
     public void updateDriverList(){
         wypelnienieDriver.clear();

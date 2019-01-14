@@ -57,4 +57,17 @@ public class MenuController implements Initializable {
         return scene;
     }
 
+    public void przejdzDoAwari(ActionEvent actionEvent) {
+        try {
+            MenuController.stage.setScene(createFailureScene());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private Scene createFailureScene() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Failures.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        return scene;
+    }
 }

@@ -122,7 +122,28 @@ public class Request {
                 .body(stopDTO)
                 .asJson();
     }
-    public static void getBus(VehicleDTO vehicleDTO){
+    public static void stopFailure(StopDTO stopDTO) throws UnirestException {
+        HttpResponse<JsonNode> postResponse = Unirest.patch("http://localhost:8080/stop/failure")
+                .header("accept", "application/json")
+                .header("Content-Type", "application/json")
+                .body(stopDTO)
+                .asJson();
+
+    }
+    public static void busFailure(VehicleDTO vehicleDTO) throws UnirestException {
+        HttpResponse<JsonNode> postResponse = Unirest.patch("http://localhost:8080/bus/failure")
+                .header("accept", "application/json")
+                .header("Content-Type", "application/json")
+                .body(vehicleDTO)
+                .asJson();
+
+    }
+    public static void tramFailure(VehicleDTO vehicleDTO) throws UnirestException {
+        HttpResponse<JsonNode> postResponse = Unirest.patch("http://localhost:8080/tram/failure")
+                .header("accept", "application/json")
+                .header("Content-Type", "application/json")
+                .body(vehicleDTO)
+                .asJson();
 
     }
 
