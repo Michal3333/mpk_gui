@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.snoreware.mpk.guiControllers.EditMenuController">
+   <children>
+       <Label fx:id="label1" layoutX="379.0" layoutY="145.0" text="Label1" />
+       <Label fx:id="label2" layoutX="379.0" layoutY="210.0" text="Label2" />
+       <Label fx:id="label3" layoutX="378.0" layoutY="274.0" text="LAbel3" />
+       <Label fx:id="label4" layoutX="379.0" layoutY="328.0" text="Label4" />
+       <Label fx:id="label5" layoutX="379.0" layoutY="388.0" text="Label5" />
+       <TextField fx:id="textField1" layoutX="480.0" layoutY="141.0" />
+       <TextField fx:id="textField2" layoutX="480.0" layoutY="206.0" />
+       <TextField fx:id="textField3" layoutX="480.0" layoutY="270.0" />
+       <TextField fx:id="textField4" layoutX="480.0" layoutY="324.0" />
+       <TextField fx:id="textField5" layoutX="480.0" layoutY="384.0" />
+       <Button layoutX="411.0" layoutY="525.0" mnemonicParsing="false" onAction="#add" text="Add" />
+       <Button layoutX="555.0" layoutY="525.0" mnemonicParsing="false" onAction="#update" text="update" />
+       <CheckBox fx:id="checkBox1" layoutX="439.0" layoutY="145.0" mnemonicParsing="false" />
+       <CheckBox fx:id="checkBox2" layoutX="439.0" layoutY="210.0" mnemonicParsing="false" />
+      <TabPane fx:id="tabs" layoutX="29.0" layoutY="30.0" prefHeight="546.0" prefWidth="219.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab onSelectionChanged="#selectBus" text="Autobusy">
+               <content>
+                  <ListView fx:id="busList" layoutX="276.0" layoutY="362.0" onMouseClicked="#wybierzBus" prefHeight="517.0" prefWidth="216.0" />
+               </content></Tab>
+          <Tab onSelectionChanged="#selectTram" text="Tramwaje">
+               <content>
+                  <ListView fx:id="tramList" onMouseClicked="#wybierzTram" prefHeight="200.0" prefWidth="361.0" />
+               </content></Tab>
+          <Tab onSelectionChanged="#selectDriver" text="Kierowcy">
+               <content>
+                  <ListView fx:id="driverList" onMouseClicked="#wybierzDriver" prefHeight="200.0" prefWidth="200.0" />
+               </content></Tab>
+            <Tab onSelectionChanged="#selectStop" text="Przystanki">
+                <content>
+                    <ListView fx:id="StopList" onMouseClicked="#wybierzStop" prefHeight="200.0" prefWidth="200.0" />
+                </content></Tab>
+        </tabs>
+      </TabPane>
+      <Button layoutX="682.0" layoutY="525.0" mnemonicParsing="false" onAction="#delete" text="Delete" />
+
+
+   </children>
+</AnchorPane>
