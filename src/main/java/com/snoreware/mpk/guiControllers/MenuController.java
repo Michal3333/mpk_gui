@@ -70,4 +70,19 @@ public class MenuController implements Initializable {
         Scene scene = new Scene(root);
         return scene;
     }
+
+    public void przejdzPodwyzki(ActionEvent actionEvent) {
+        try {
+            MenuController.stage.setScene(createUpgradeScene());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Scene createUpgradeScene() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SalaryUpgrade.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        return scene;
+    }
 }

@@ -11,15 +11,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseEvent;
 
+import java.net.URL;
 import java.util.Arrays;
+import java.util.ResourceBundle;
 
-public class FailuresController {
+public class FailuresController implements Initializable {
     public TabPane tabs;
     public ListView<StopEntity> stopsL;
     public ListView<BusEntity> busesL;
@@ -154,5 +157,10 @@ public class FailuresController {
         } catch (UnirestException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        updateStopList();
     }
 }

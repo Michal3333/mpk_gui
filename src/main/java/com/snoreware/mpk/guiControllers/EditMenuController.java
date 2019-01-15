@@ -138,13 +138,7 @@ public class EditMenuController implements Initializable {
     }
     public void updateDriverList(){
         wypelnienieDriver.clear();
-        try {
-            DriverEntity[] drvers = Request.getDrivers();
-            wypelnienieDriver.addAll(Arrays.asList(drvers));
-            driverList.setItems(wypelnienieDriver);
-        } catch (UnirestException e) {
-            e.printStackTrace();
-        }
+        SalaryUpgradeController.updateDr(wypelnienieDriver, driverList);
     }
     public void updateStopList(){
         wypelnienieStop.clear();
