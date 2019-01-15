@@ -224,7 +224,7 @@ public class EditMenuController implements Initializable {
             updateTramList();
         }
         else if(tab == 2){
-            DriverEntity driver = driverList.getSelectionModel().getSelectedItem();
+            DriverDTO driver = Request.getDriver(driverList.getSelectionModel().getSelectedItem());
             DriverDTO driverDTO = new DriverDTO();
             driverDTO.setDriverId(driver.getDriverId());
             driverDTO.setName(labels[0]);
@@ -269,7 +269,7 @@ public class EditMenuController implements Initializable {
             DriverDTO driverDTO = new DriverDTO();
             driverDTO.setDriverId(driver.getDriverId());
             Request.deleteDriver(driverDTO);
-            updateDriverList();
+//            updateDriverList();
         }
         else if(tab == 3){
             StopEntity stop = StopList.getSelectionModel().getSelectedItem();
@@ -287,7 +287,7 @@ public class EditMenuController implements Initializable {
     }
 
     public void selectBus(Event event) {
-       setLabelsForBus();
+//       setLabelsForBus();
     }
 
     public void selectDriver(Event event) {
@@ -300,7 +300,7 @@ public class EditMenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-      setLabelsForBus();
+//      setLabelsForBus();
     }
 
     public void wybierzBus(MouseEvent mouseEvent) {
@@ -319,8 +319,8 @@ public class EditMenuController implements Initializable {
         DriverEntity driver = driverList.getSelectionModel().getSelectedItem();
         textField1.setText(driver.getName());
         textField2.setText(driver.getSurname());
-        textField3.setText(driver.getSex());
-        textField4.setText(driver.getSalary().toString());
+//        textField3.setText(driver.getSex());
+//        textField4.setText(driver.getSalary().toString());
 
     }
 

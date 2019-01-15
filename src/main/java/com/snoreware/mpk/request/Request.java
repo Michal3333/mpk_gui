@@ -12,6 +12,8 @@ import com.snoreware.mpk.model.DriverDTO;
 import com.snoreware.mpk.model.StopDTO;
 import com.snoreware.mpk.model.VehicleDTO;
 
+import java.util.UUID;
+
 public class Request {
     public static DriverEntity[] getDrivers() throws UnirestException {
         DriverEntity[] drivers;
@@ -67,9 +69,10 @@ public class Request {
                 .asJson();
     }
     public static void updateDriver(DriverDTO driverDTO) throws UnirestException {
-        HttpResponse<JsonNode> postResponse = Unirest.patch("http://localhost:8080/driver/update")
+        HttpResponse<JsonNode> postResponse = Unirest.patch("http://localhost:8080/driver/update/{id}")
                 .header("accept", "application/json")
                 .header("Content-Type", "application/json")
+                .routeParam("id", driverDTO.getDriverId().toString())
                 .body(driverDTO)
                 .asJson();
     }
@@ -95,11 +98,8 @@ public class Request {
                 .asJson();
     }
     public static void deleteDriver(DriverDTO driverDTO) throws UnirestException {
-        HttpResponse<JsonNode> postResponse = Unirest.delete("http://localhost:8080/driver/delete")
-                .header("accept", "application/json")
-                .header("Content-Type", "application/json")
-                .body(driverDTO)
-                .asJson();
+        HttpResponse<Object> postResponse = Unirest.delete("http://localhost:8080/driver/delete/" + driverDTO.getDriverId().toString())
+                .asObject(Object.class);
     }
     public static void deleteBus(VehicleDTO vehicleDTO) throws UnirestException {
         HttpResponse<JsonNode> postResponse = Unirest.delete("http://localhost:8080/bus/remove")
@@ -144,7 +144,15 @@ public class Request {
                 .header("Content-Type", "application/json")
                 .body(vehicleDTO)
                 .asJson();
+    }
+    public static DriverDTO getDriver(DriverEntity driver) throws UnirestException {
+        DriverDTO driverDTO = new DriverDTO();
+        HttpResponse<DriverDTO> postResponse = Unirest.get("http://localhost:8080/driver/{id}")
+                .routeParam("id",driver.getDriverId().toString())
+                .asObject(DriverDTO.class);
 
+        driverDTO = postResponse.getBody();
+        return driverDTO;
     }
 
 }
