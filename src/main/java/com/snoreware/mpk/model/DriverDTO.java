@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.bytebuddy.asm.Advice;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -18,4 +19,6 @@ public class DriverDTO {
     private String surname;
     private String sex;
     private Float salary;
+    private List<UUID> tramCourses;
+    private List<UUID> busCourses;
 }

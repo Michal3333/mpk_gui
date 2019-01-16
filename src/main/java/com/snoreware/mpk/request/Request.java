@@ -70,8 +70,6 @@ public class Request {
     }
     public static void updateDriver(DriverDTO driverDTO) throws UnirestException {
         HttpResponse<JsonNode> postResponse = Unirest.patch("http://localhost:8080/driver/update/{id}")
-                .header("accept", "application/json")
-                .header("Content-Type", "application/json")
                 .routeParam("id", driverDTO.getDriverId().toString())
                 .body(driverDTO)
                 .asJson();
@@ -98,8 +96,9 @@ public class Request {
                 .asJson();
     }
     public static void deleteDriver(DriverDTO driverDTO) throws UnirestException {
-        HttpResponse<Object> postResponse = Unirest.delete("http://localhost:8080/driver/delete/" + driverDTO.getDriverId().toString())
-                .asObject(Object.class);
+        HttpResponse<JsonNode> postResponse = Unirest.delete("http://localhost:8080/driver/delete/{id}")
+                .routeParam("id", driverDTO.getDriverId().toString())
+                .asJson();
     }
     public static void deleteBus(VehicleDTO vehicleDTO) throws UnirestException {
         HttpResponse<JsonNode> postResponse = Unirest.delete("http://localhost:8080/bus/remove")
@@ -146,13 +145,12 @@ public class Request {
                 .asJson();
     }
     public static DriverDTO getDriver(DriverEntity driver) throws UnirestException {
-        DriverDTO driverDTO = new DriverDTO();
         HttpResponse<DriverDTO> postResponse = Unirest.get("http://localhost:8080/driver/{id}")
+                .header("accept", "application/json")
+                .header("content-type", "application/json")
                 .routeParam("id",driver.getDriverId().toString())
                 .asObject(DriverDTO.class);
-
-        driverDTO = postResponse.getBody();
-        return driverDTO;
+        return postResponse.getBody();
     }
 
 }

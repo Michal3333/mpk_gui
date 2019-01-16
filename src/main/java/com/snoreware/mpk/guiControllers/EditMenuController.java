@@ -229,8 +229,8 @@ public class EditMenuController implements Initializable {
             driverDTO.setDriverId(driver.getDriverId());
             driverDTO.setName(labels[0]);
             driverDTO.setSurname(labels[1]);
-            driverDTO.setSex(labels[2]);
-            driverDTO.setSalary(Float.parseFloat(labels[3]));
+//            driverDTO.setSex(labels[2]);
+//            driverDTO.setSalary(Float.parseFloat(labels[3]));
             Request.updateDriver(driverDTO);
             updateDriverList();
         }
@@ -269,7 +269,7 @@ public class EditMenuController implements Initializable {
             DriverDTO driverDTO = new DriverDTO();
             driverDTO.setDriverId(driver.getDriverId());
             Request.deleteDriver(driverDTO);
-//            updateDriverList();
+            updateDriverList();
         }
         else if(tab == 3){
             StopEntity stop = StopList.getSelectionModel().getSelectedItem();
