@@ -56,6 +56,8 @@ public class FailuresController implements Initializable {
             TramRequest.tramFailure(id);
             updateTramList();
         }
+        button.setVisible(false);
+        label.setVisible(false);
     }
 
     public void tramsClicked(MouseEvent mouseEvent) throws UnirestException {
