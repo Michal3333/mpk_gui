@@ -19,6 +19,7 @@ public class DriverDTO {
     private String surname;
     private String sex;
     private Float salary;
+    private int seniority;
     private List<UUID> tramCourses;
     private List<UUID> busCourses;
 }

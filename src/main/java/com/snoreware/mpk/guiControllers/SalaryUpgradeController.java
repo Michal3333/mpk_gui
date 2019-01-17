@@ -3,7 +3,10 @@ package com.snoreware.mpk.guiControllers;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.snoreware.mpk.entities.DriverEntity;
 import com.snoreware.mpk.model.DriverDTO;
-import com.snoreware.mpk.request.Request;
+import com.snoreware.mpk.modelIn.InDriverDTO;
+import com.snoreware.mpk.request.StopRequest;
+import com.snoreware.mpk.request.DriverRequest;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,23 +21,23 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class SalaryUpgradeController implements Initializable {
-    public ListView<DriverEntity> driverList;
+    public ListView<InDriverDTO> driverList;
     public Label name;
     public Label surname;
     public Label sex;
     public Label salary;
     public Label seniority;
     public TextField upgrade;
-    private ObservableList<DriverEntity> wypelnienieDriver = FXCollections.observableArrayList();
+    private ObservableList<InDriverDTO> wypelnienieDriver = FXCollections.observableArrayList();
 
     public void updateDriverList(){
         wypelnienieDriver.clear();
         updateDr(wypelnienieDriver, driverList);
     }
 
-    static void updateDr(ObservableList<DriverEntity> wypelnienieDriver, ListView<DriverEntity> driverList) {
+    static void updateDr(ObservableList<InDriverDTO> wypelnienieDriver, ListView<InDriverDTO> driverList) {
         try {
-            DriverEntity[] drvers = Request.getDrivers();
+            InDriverDTO[] drvers = DriverRequest.getDrivers();
             wypelnienieDriver.addAll(Arrays.asList(drvers));
             driverList.setItems(wypelnienieDriver);
         } catch (UnirestException e) {
@@ -43,11 +46,12 @@ public class SalaryUpgradeController implements Initializable {
     }
 
     public void zatwierdz(ActionEvent actionEvent) throws UnirestException {
-        DriverEntity driver = driverList.getSelectionModel().getSelectedItem();
+        InDriverDTO driverid = driverList.getSelectionModel().getSelectedItem();
+        DriverDTO driver = DriverRequest.getDriver(driverid);
         DriverDTO driverDTO = new DriverDTO();
         driverDTO.setDriverId(driver.getDriverId());
         driverDTO.setSalary(driver.getSalary() + Float.parseFloat(upgrade.getText()));
-        Request.updateDriver(driverDTO);
+        DriverRequest.updateDriver(driverDTO);
         updateDriverList();
         name.setVisible(false);
         surname.setVisible(false);
@@ -56,18 +60,18 @@ public class SalaryUpgradeController implements Initializable {
         seniority.setVisible(false);
     }
 
-    public void selectDriver(MouseEvent mouseEvent) {
+    public void selectDriver(MouseEvent mouseEvent) throws UnirestException {
         name.setVisible(true);
         surname.setVisible(true);
         sex.setVisible(true);
         salary.setVisible(true);
         seniority.setVisible(true);
-        DriverEntity driver = driverList.getSelectionModel().getSelectedItem();
+        InDriverDTO driverid = driverList.getSelectionModel().getSelectedItem();
+        DriverDTO driver = DriverRequest.getDriver(driverid);
         name.setText("Imie: "+ driver.getName());
         surname.setText("Nazwisko :"+ driver.getSurname());
         sex.setText("Plec: "+ driver.getSex());
         salary.setText("Placa: "+ driver.getSalary().toString());
-        seniority.setText("Staz: "+ driver.getSeniority());
     }
 
     @Override

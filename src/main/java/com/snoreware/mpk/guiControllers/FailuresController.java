@@ -4,9 +4,15 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.snoreware.mpk.entities.BusEntity;
 import com.snoreware.mpk.entities.StopEntity;
 import com.snoreware.mpk.entities.TramEntity;
+import com.snoreware.mpk.model.BusDTO;
 import com.snoreware.mpk.model.StopDTO;
+import com.snoreware.mpk.model.TramDTO;
 import com.snoreware.mpk.model.VehicleDTO;
-import com.snoreware.mpk.request.Request;
+import com.snoreware.mpk.modelIn.InStopDTO;
+import com.snoreware.mpk.request.StopRequest;
+import com.snoreware.mpk.request.BusRequest;
+import com.snoreware.mpk.request.TramRequest;
+import com.snoreware.mpk.request.DriverRequest;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,45 +30,40 @@ import java.util.ResourceBundle;
 
 public class FailuresController implements Initializable {
     public TabPane tabs;
-    public ListView<StopEntity> stopsL;
-    public ListView<BusEntity> busesL;
-    public ListView<TramEntity> tramsL;
+    public ListView<InStopDTO> stopsL;
+    public ListView<Long> busesL;
+    public ListView<Long> tramsL;
     public Label label;
     public Button button;
-    private ObservableList<BusEntity> wypelnienieBus = FXCollections.observableArrayList();
-    private ObservableList<StopEntity> wypelnienieStop = FXCollections.observableArrayList();
-    private ObservableList<TramEntity> wypelnienieTram = FXCollections.observableArrayList();
+    private ObservableList<Long> wypelnienieBus = FXCollections.observableArrayList();
+    private ObservableList<InStopDTO> wypelnienieStop = FXCollections.observableArrayList();
+    private ObservableList<Long> wypelnienieTram = FXCollections.observableArrayList();
 
     public void zglos(ActionEvent actionEvent) throws UnirestException {
         int tab = tabs.getSelectionModel().getSelectedIndex();
         if(tab == 0){
-            StopEntity stop = stopsL.getSelectionModel().getSelectedItem();
-            StopDTO stopDTO = new StopDTO();
-            stopDTO.setStopId(stop.getStopId());
-            Request.stopFailure(stopDTO);
+            InStopDTO stop = stopsL.getSelectionModel().getSelectedItem();
+            StopRequest.stopFailure(stop);
             updateStopList();
         }
         else if(tab == 1){
-            BusEntity bus = busesL.getSelectionModel().getSelectedItem();
-            VehicleDTO vehicleDTO = new VehicleDTO();
-            vehicleDTO.setVehicleNumber(bus.getVehicleNumber());
-            Request.busFailure(vehicleDTO);
+            Long id = busesL.getSelectionModel().getSelectedItem();
+            BusRequest.busFailure(id);
             updateBusList();
         }
         else if(tab == 2){
-            TramEntity tram = tramsL.getSelectionModel().getSelectedItem();
-            VehicleDTO vehicleDTO = new VehicleDTO();
-            vehicleDTO.setVehicleNumber(tram.getVehicleNumber());
-            Request.tramFailure(vehicleDTO);
+            Long id = tramsL.getSelectionModel().getSelectedItem();
+            TramRequest.tramFailure(id);
             updateTramList();
         }
     }
 
-    public void tramsClicked(MouseEvent mouseEvent) {
+    public void tramsClicked(MouseEvent mouseEvent) throws UnirestException {
         button.setVisible(true);
         label.setVisible(true);
-        TramEntity tram = tramsL.getSelectionModel().getSelectedItem();
-        if(tram.getVehicleBreakdown()){
+        Long id = tramsL.getSelectionModel().getSelectedItem();
+        TramDTO tram = TramRequest.getTram(id);
+        if(tram.getBreakdown()){
             label.setText("awaria");
             button.setText("napraw");
         }
@@ -72,11 +73,12 @@ public class FailuresController implements Initializable {
         }
     }
 
-    public void busesClicked(MouseEvent mouseEvent) {
+    public void busesClicked(MouseEvent mouseEvent) throws UnirestException {
         button.setVisible(true);
         label.setVisible(true);
-        BusEntity bus = busesL.getSelectionModel().getSelectedItem();
-        if(bus.getVehicleBreakdown()){
+        Long id = busesL.getSelectionModel().getSelectedItem();
+        BusDTO bus = BusRequest.getBus(id);
+        if(bus.getBreakdown()){
             label.setText("awaria bus");
             button.setText("napraw");
         }
@@ -86,11 +88,12 @@ public class FailuresController implements Initializable {
         }
     }
 
-    public void stopsClicked(MouseEvent mouseEvent) {
+    public void stopsClicked(MouseEvent mouseEvent) throws UnirestException {
         button.setVisible(true);
         label.setVisible(true);
-        StopEntity stop = stopsL.getSelectionModel().getSelectedItem();
-        if(stop.isStopBreakdown()){
+        InStopDTO stopid = stopsL.getSelectionModel().getSelectedItem();
+        StopDTO stop = StopRequest.getStop(stopid);
+        if(stop.getStopBreakdown()){
             label.setText("awaria");
             button.setText("napraw");
         }
@@ -131,7 +134,7 @@ public class FailuresController implements Initializable {
     public void updateStopList(){
         wypelnienieStop.clear();
         try {
-            StopEntity[] stops = Request.getStops();
+            InStopDTO[] stops = StopRequest.getStops();
             wypelnienieStop.addAll(Arrays.asList(stops));
             stopsL.setItems(wypelnienieStop);
         } catch (UnirestException e) {
@@ -139,9 +142,9 @@ public class FailuresController implements Initializable {
         }
     }
 
-    static void updateTrams(ObservableList<TramEntity> wypelnienieTram, ListView<TramEntity> tramsL) {
+    static void updateTrams(ObservableList<Long> wypelnienieTram, ListView<Long> tramsL) {
         try {
-            TramEntity[] trams = Request.getTrams();
+            Long[] trams = TramRequest.getTrams();
             wypelnienieTram.addAll(Arrays.asList(trams));
             tramsL.setItems(wypelnienieTram);
         } catch (UnirestException e) {
@@ -149,9 +152,9 @@ public class FailuresController implements Initializable {
         }
     }
 
-    static void updateBus(ObservableList<BusEntity> wypelnienieBus, ListView<BusEntity> busesL) {
+    static void updateBus(ObservableList<Long> wypelnienieBus, ListView<Long> busesL) {
         try {
-            BusEntity[] buses = Request.getBuses();
+            Long[] buses =BusRequest.getBuses();
             wypelnienieBus.addAll(Arrays.asList(buses));
             busesL.setItems(wypelnienieBus);
         } catch (UnirestException e) {

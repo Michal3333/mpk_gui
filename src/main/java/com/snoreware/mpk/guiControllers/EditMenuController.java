@@ -2,10 +2,13 @@ package com.snoreware.mpk.guiControllers;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.snoreware.mpk.entities.*;
-import com.snoreware.mpk.model.DriverDTO;
-import com.snoreware.mpk.model.StopDTO;
-import com.snoreware.mpk.model.VehicleDTO;
-import com.snoreware.mpk.request.Request;
+import com.snoreware.mpk.model.*;
+import com.snoreware.mpk.modelIn.InDriverDTO;
+import com.snoreware.mpk.modelIn.InStopDTO;
+import com.snoreware.mpk.request.StopRequest;
+import com.snoreware.mpk.request.BusRequest;
+import com.snoreware.mpk.request.DriverRequest;
+import com.snoreware.mpk.request.TramRequest;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,17 +33,16 @@ public class EditMenuController implements Initializable {
     public TextField textField4;
     public TextField textField5;
     public TabPane tabs;
-    public ListView <BusEntity>busList;
-    public ListView <TramEntity>tramList;
-    public ListView <DriverEntity>driverList;
-    public ListView <StopEntity>StopList;
+    public ListView <Long>busList;
+    public ListView <Long>tramList;
+    public ListView <InDriverDTO>driverList;
+    public ListView <InStopDTO>StopList;
     public CheckBox checkBox1;
     public CheckBox checkBox2;
-    private ObservableList<String> wypelnienie = FXCollections.observableArrayList();
-    private ObservableList<DriverEntity> wypelnienieDriver = FXCollections.observableArrayList();
-    private ObservableList<BusEntity> wypelnienieBus = FXCollections.observableArrayList();
-    private ObservableList<StopEntity> wypelnienieStop = FXCollections.observableArrayList();
-    private ObservableList<TramEntity> wypelnienieTram = FXCollections.observableArrayList();
+    private ObservableList<InDriverDTO> wypelnienieDriver = FXCollections.observableArrayList();
+    private ObservableList<Long> wypelnienieBus = FXCollections.observableArrayList();
+    private ObservableList<InStopDTO> wypelnienieStop = FXCollections.observableArrayList();
+    private ObservableList<Long> wypelnienieTram = FXCollections.observableArrayList();
 
 
     public void clear(){
@@ -143,7 +145,7 @@ public class EditMenuController implements Initializable {
     public void updateStopList(){
         wypelnienieStop.clear();
         try {
-            StopEntity[] stops = Request.getStops();
+            InStopDTO[] stops = StopRequest.getStops();
             wypelnienieStop.addAll(Arrays.asList(stops));
             StopList.setItems(wypelnienieStop);
         } catch (UnirestException e) {
@@ -167,14 +169,14 @@ public class EditMenuController implements Initializable {
            VehicleDTO vehicleDTO = new VehicleDTO();
            vehicleDTO.setArticulated(check2);
            vehicleDTO.setLowFloor(check1);
-           Request.addBus(vehicleDTO);
+           BusRequest.addBus(vehicleDTO);
            updateBusList();
        }
        else if(tab == 1){
            VehicleDTO vehicleDTO = new VehicleDTO();
            vehicleDTO.setLowFloor(check1);
            vehicleDTO.setNumberOfWagons(Integer.parseInt(labels[1]));
-           Request.addTram(vehicleDTO);
+           TramRequest.addTram(vehicleDTO);
            updateTramList();
        }
        else if(tab == 2){
@@ -183,13 +185,13 @@ public class EditMenuController implements Initializable {
            driverDTO.setSurname(labels[1]);
            driverDTO.setSex(labels[2]);
            driverDTO.setSalary(Float.parseFloat(labels[3]));
-           Request.addDriver(driverDTO);
+           DriverRequest.addDriver(driverDTO);
            updateDriverList();
        }
        else if(tab == 3){
            StopDTO stopDTO = new StopDTO();
            stopDTO.setStopName(labels[0]);
-           Request.addStop(stopDTO);
+           StopRequest.addStop(stopDTO);
             updateStopList();
        }
        clear();
@@ -206,40 +208,39 @@ public class EditMenuController implements Initializable {
         boolean check1 = checkBox1.isSelected();
         boolean check2 = checkBox2.isSelected();
         if(tab == 0){
-            BusEntity bus = busList.getSelectionModel().getSelectedItem();
+            Long id = busList.getSelectionModel().getSelectedItem();
             VehicleDTO vehicleDTO = new VehicleDTO();
-            vehicleDTO.setVehicleNumber(bus.getVehicleNumber());
+            vehicleDTO.setVehicleNumber(id);
             vehicleDTO.setArticulated(check2);
             vehicleDTO.setLowFloor(check1);
-            Request.updateBus(vehicleDTO);
+            BusRequest.updateBus(vehicleDTO);
             updateBusList();
         }
         else if(tab == 1){
-            TramEntity tram = tramList.getSelectionModel().getSelectedItem();
+            Long id  = tramList.getSelectionModel().getSelectedItem();
             VehicleDTO vehicleDTO = new VehicleDTO();
-            vehicleDTO.setVehicleNumber(tram.getVehicleNumber());
+            vehicleDTO.setVehicleNumber(id);
             vehicleDTO.setLowFloor(check1);
             vehicleDTO.setNumberOfWagons(Integer.parseInt(labels[1]));
-            Request.updateTram(vehicleDTO);
+            TramRequest.updateTram(vehicleDTO);
             updateTramList();
         }
         else if(tab == 2){
-            DriverDTO driver = Request.getDriver(driverList.getSelectionModel().getSelectedItem());
+            DriverDTO driver = DriverRequest.getDriver(driverList.getSelectionModel().getSelectedItem());
             DriverDTO driverDTO = new DriverDTO();
             driverDTO.setDriverId(driver.getDriverId());
             driverDTO.setName(labels[0]);
             driverDTO.setSurname(labels[1]);
-//            driverDTO.setSex(labels[2]);
-//            driverDTO.setSalary(Float.parseFloat(labels[3]));
-            Request.updateDriver(driverDTO);
+            driverDTO.setSex(labels[2]);
+            driverDTO.setSalary(Float.parseFloat(labels[3]));
+            DriverRequest.updateDriver(driverDTO);
             updateDriverList();
         }
         else if(tab == 3){
-            StopEntity stop = StopList.getSelectionModel().getSelectedItem();
-            StopDTO stopDTO = new StopDTO();
-            stopDTO.setStopId(stop.getStopId());
-            stopDTO.setStopName(labels[0]);
-            Request.updateStop(stopDTO);
+            InStopDTO stop =StopList.getSelectionModel().getSelectedItem();
+            stop.setStopId(stop.getStopId());
+            stop.setStopName(labels[0]);
+            StopRequest.updateStop(stop);
             updateStopList();
         }
 
@@ -251,31 +252,31 @@ public class EditMenuController implements Initializable {
 
 
         if(tab == 0){
-            BusEntity bus = busList.getSelectionModel().getSelectedItem();
+            Long id = busList.getSelectionModel().getSelectedItem();
             VehicleDTO vehicleDTO = new VehicleDTO();
-            vehicleDTO.setVehicleNumber(bus.getVehicleNumber());
-            Request.deleteBus(vehicleDTO);
+            vehicleDTO.setVehicleNumber(id);
+            BusRequest.deleteBus(vehicleDTO);
             updateBusList();
         }
         else if(tab == 1){
-            TramEntity tram = tramList.getSelectionModel().getSelectedItem();
+            Long id = tramList.getSelectionModel().getSelectedItem();
             VehicleDTO vehicleDTO = new VehicleDTO();
-            vehicleDTO.setVehicleNumber(tram.getVehicleNumber());
-            Request.deleteTram(vehicleDTO);
+            vehicleDTO.setVehicleNumber(id);
+            TramRequest.deleteTram(vehicleDTO);
             updateTramList();
         }
         else if(tab == 2){
-            DriverEntity driver = driverList.getSelectionModel().getSelectedItem();
+            InDriverDTO driver = driverList.getSelectionModel().getSelectedItem();
             DriverDTO driverDTO = new DriverDTO();
             driverDTO.setDriverId(driver.getDriverId());
-            Request.deleteDriver(driverDTO);
+            DriverRequest.deleteDriver(driverDTO);
             updateDriverList();
         }
         else if(tab == 3){
-            StopEntity stop = StopList.getSelectionModel().getSelectedItem();
+            InStopDTO stop = StopList.getSelectionModel().getSelectedItem();
             StopDTO stopDTO = new StopDTO();
             stopDTO.setStopId(stop.getStopId());
-            Request.deleteStop(stopDTO);
+            StopRequest.deleteStop(stopDTO);
             updateStopList();
         }
 
@@ -287,7 +288,7 @@ public class EditMenuController implements Initializable {
     }
 
     public void selectBus(Event event) {
-//       setLabelsForBus();
+       setLabelsForBus();
     }
 
     public void selectDriver(Event event) {
@@ -300,32 +301,35 @@ public class EditMenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//      setLabelsForBus();
+      setLabelsForBus();
     }
 
-    public void wybierzBus(MouseEvent mouseEvent) {
-        BusEntity bus = busList.getSelectionModel().getSelectedItem();
+    public void wybierzBus(MouseEvent mouseEvent) throws UnirestException {
+        Long id = busList.getSelectionModel().getSelectedItem();
+        BusDTO bus = BusRequest.getBus(id);
         checkBox1.setSelected(bus.getLowFloor());
         checkBox2.setSelected(bus.getArticulated());
     }
 
-    public void wybierzTram(MouseEvent mouseEvent) {
-        TramEntity tram = tramList.getSelectionModel().getSelectedItem();
+    public void wybierzTram(MouseEvent mouseEvent) throws UnirestException {
+        Long id = tramList.getSelectionModel().getSelectedItem();
+        TramDTO tram = TramRequest.getTram(id);
         checkBox1.setSelected(tram.getLowFloor());
         textField2.setText(Integer.toString(tram.getNumberOfWagons()));
     }
 
-    public void wybierzDriver(MouseEvent mouseEvent) {
-        DriverEntity driver = driverList.getSelectionModel().getSelectedItem();
+    public void wybierzDriver(MouseEvent mouseEvent) throws UnirestException {
+        InDriverDTO driverid = driverList.getSelectionModel().getSelectedItem();
+        DriverDTO driver = DriverRequest.getDriver(driverid);
         textField1.setText(driver.getName());
         textField2.setText(driver.getSurname());
-//        textField3.setText(driver.getSex());
-//        textField4.setText(driver.getSalary().toString());
+        textField3.setText(driver.getSex());
+        textField4.setText(driver.getSalary().toString());
 
     }
 
-    public void wybierzStop(MouseEvent mouseEvent) {
-        StopEntity stop = StopList.getSelectionModel().getSelectedItem();
+    public void wybierzStop(MouseEvent mouseEvent) throws UnirestException {
+        InStopDTO stop= StopList.getSelectionModel().getSelectedItem();
         textField1.setText(stop.getStopName());
     }
 
