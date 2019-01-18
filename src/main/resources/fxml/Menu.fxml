@@ -7,6 +7,7 @@
    <children>
       <Button layoutX="373.0" layoutY="232.0" mnemonicParsing="false" onAction="#przejdzDoEdycji" prefHeight="95.0" prefWidth="131.0" text="Edytuj Baze" />
       <Button layoutX="117.0" layoutY="232.0" mnemonicParsing="false" onAction="#przejdzDoAwari" prefHeight="95.0" prefWidth="131.0" text="Awarie" />
+      <Button layoutX="373.0" layoutY="105.0" mnemonicParsing="false" onAction="#przejdzDoEdycjitras" prefHeight="95.0" prefWidth="131.0" text="Trasy" />
       <Button layoutX="117.0" layoutY="105.0" mnemonicParsing="false" onAction="#przejdzPodwyzki" prefHeight="95.0" prefWidth="131.0" text="Podwyżki" />
    </children>
 </AnchorPane>

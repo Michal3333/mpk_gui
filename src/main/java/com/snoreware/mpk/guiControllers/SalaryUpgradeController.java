@@ -10,12 +10,16 @@ import com.snoreware.mpk.request.DriverRequest;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -77,5 +81,22 @@ public class SalaryUpgradeController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         updateDriverList();
+    }
+
+    public void goHome(ActionEvent actionEvent) {
+        try {
+            MenuController.stage.setScene(createMenuScne());
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private Scene createMenuScne() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Menu.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        return scene;
     }
 }

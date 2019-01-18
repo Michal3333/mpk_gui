@@ -13,10 +13,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -334,4 +338,20 @@ public class EditMenuController implements Initializable {
     }
 
 
+    public void goHome(ActionEvent actionEvent) {
+        try {
+            MenuController.stage.setScene(createMenuScne());
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private Scene createMenuScne() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Menu.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        return scene;
+    }
 }

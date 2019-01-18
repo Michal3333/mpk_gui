@@ -6,17 +6,17 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.snoreware.mpk.guiControllers.SalaryUpgradeController">
    <children>
-      <ListView fx:id="driverList" layoutX="37.0" layoutY="44.0" prefHeight="517.0" prefWidth="290.0" onMouseClicked="#selectDriver" />
+      <ListView fx:id="driverList" layoutX="37.0" layoutY="44.0" onMouseClicked="#selectDriver" prefHeight="517.0" prefWidth="290.0" />
       <Label fx:id="name" layoutX="441.0" layoutY="128.0" text="Label" />
       <Label fx:id="surname" layoutX="441.0" layoutY="183.0" text="Label" />
       <Label fx:id="sex" layoutX="441.0" layoutY="239.0" text="Label" />
       <Label fx:id="salary" layoutX="441.0" layoutY="292.0" text="Label" />
       <Label fx:id="seniority" layoutX="441.0" layoutY="344.0" text="Label" />
-      <TextField fx:id="upgrade" layoutX="526.0" layoutY="467.0" />
+      <TextField fx:id="upgrade" layoutX="584.0" layoutY="467.0" />
       <Label layoutX="413.0" layoutY="471.0" text="O ile chcesz podnieść place?" />
-      <Button layoutX="575.0" layoutY="529.0" mnemonicParsing="false" text="podwyżdka" onAction="#zatwierdz" />
+      <Button layoutX="575.0" layoutY="529.0" mnemonicParsing="false" onAction="#zatwierdz" text="podwyżdka" />
+      <Button layoutX="707.0" layoutY="529.0" mnemonicParsing="false" text="Home" onAction="#goHome"/>
    </children>
 </AnchorPane>

@@ -22,7 +22,7 @@
        <TextField fx:id="textField4" layoutX="480.0" layoutY="324.0" />
        <TextField fx:id="textField5" layoutX="480.0" layoutY="384.0" />
        <Button layoutX="411.0" layoutY="525.0" mnemonicParsing="false" onAction="#add" text="Add" />
-       <Button layoutX="555.0" layoutY="525.0" mnemonicParsing="false" onAction="#update" text="update" />
+       <Button layoutX="460.0" layoutY="525.0" mnemonicParsing="false" onAction="#update" text="update" />
        <CheckBox fx:id="checkBox1" layoutX="439.0" layoutY="145.0" mnemonicParsing="false" />
        <CheckBox fx:id="checkBox2" layoutX="439.0" layoutY="210.0" mnemonicParsing="false" />
       <TabPane fx:id="tabs" layoutX="29.0" layoutY="30.0" prefHeight="546.0" prefWidth="219.0" tabClosingPolicy="UNAVAILABLE">
@@ -45,7 +45,8 @@
                 </content></Tab>
         </tabs>
       </TabPane>
-      <Button layoutX="682.0" layoutY="525.0" mnemonicParsing="false" onAction="#delete" text="Delete" />
+      <Button layoutX="529.0" layoutY="525.0" mnemonicParsing="false" onAction="#delete" text="Delete" />
+      <Button layoutX="667.0" layoutY="512.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="91.0" text="Home" onAction="#goHome"/>
 
 
    </children>

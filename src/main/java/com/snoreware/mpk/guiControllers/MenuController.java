@@ -85,4 +85,19 @@ public class MenuController implements Initializable {
         Scene scene = new Scene(root);
         return scene;
     }
+
+    public void przejdzDoEdycjitras(ActionEvent actionEvent) {
+        try {
+            MenuController.stage.setScene(createRouteScene());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Scene createRouteScene() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/EditRoute.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        return scene;
+    }
 }

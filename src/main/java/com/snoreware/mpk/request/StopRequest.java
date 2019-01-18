@@ -21,6 +21,14 @@ public class StopRequest {
         stops = postResponse.getBody();
         return stops;
     }
+    public static InStopDTO[] getWorkingStops() throws UnirestException {
+        InStopDTO[] stops;
+        HttpResponse<InStopDTO[]> postResponse = Unirest.get("http://localhost:8080/stop/all")
+                .queryString("notBroken", true)
+                .asObject(InStopDTO[].class);
+        stops = postResponse.getBody();
+        return stops;
+    }
     public static void addStop(StopDTO stopDTO) throws UnirestException {
         HttpResponse<JsonNode> postResponse = Unirest.post("http://localhost:8080/stop/add")
                 .header("accept", "application/json")
