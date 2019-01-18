@@ -74,7 +74,7 @@ public class EditRouteController implements Initializable {
             delete.setVisible(true);
             wypelnienieStop.clear();
             ListaSops.setItems(wypelnienieStop);
-            wypelnienieStopAll.setAll(StopRequest.getStops());
+            wypelnienieStopAll.setAll(StopRequest.getWorkingStops());
             combo.setItems(wypelnienieStopAll);
             editmode.setText("Quit Edit mode");
         }
