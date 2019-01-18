@@ -5,9 +5,10 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.snoreware.mpk.guiControllers.MenuController">
    <children>
-      <Button layoutX="373.0" layoutY="232.0" mnemonicParsing="false" onAction="#przejdzDoEdycji" prefHeight="95.0" prefWidth="131.0" text="Edytuj Baze" />
-      <Button layoutX="117.0" layoutY="232.0" mnemonicParsing="false" onAction="#przejdzDoAwari" prefHeight="95.0" prefWidth="131.0" text="Awarie" />
-      <Button layoutX="373.0" layoutY="105.0" mnemonicParsing="false" onAction="#przejdzDoEdycjitras" prefHeight="95.0" prefWidth="131.0" text="Trasy" />
-      <Button layoutX="117.0" layoutY="105.0" mnemonicParsing="false" onAction="#przejdzPodwyzki" prefHeight="95.0" prefWidth="131.0" text="Podwyżki" />
+      <Button layoutX="402.0" layoutY="255.0" mnemonicParsing="false" onAction="#przejdzDoEdycji" prefHeight="95.0" prefWidth="131.0" text="Edytuj Baze" />
+      <Button layoutX="220.0" layoutY="255.0" mnemonicParsing="false" onAction="#przejdzDoAwari" prefHeight="95.0" prefWidth="131.0" text="Awarie" />
+      <Button layoutX="402.0" layoutY="131.0" mnemonicParsing="false" onAction="#przejdzDoEdycjitras" prefHeight="95.0" prefWidth="131.0" text="Trasy" />
+      <Button layoutX="220.0" layoutY="131.0" mnemonicParsing="false" onAction="#przejdzPodwyzki" prefHeight="95.0" prefWidth="131.0" text="Podwyżki" />
+      <Button layoutX="39.0" layoutY="131.0" mnemonicParsing="false" prefHeight="95.0" prefWidth="131.0" text="Kursy" onAction="#przjdzKursy"/>
    </children>
 </AnchorPane>

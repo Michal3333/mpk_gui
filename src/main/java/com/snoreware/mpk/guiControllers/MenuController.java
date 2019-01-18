@@ -100,4 +100,18 @@ public class MenuController implements Initializable {
         Scene scene = new Scene(root);
         return scene;
     }
+
+    public void przjdzKursy(ActionEvent actionEvent) {
+        try {
+            MenuController.stage.setScene(createCourse());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private Scene createCourse() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CourseEdit.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        return scene;
+    }
 }
