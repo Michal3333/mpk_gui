@@ -18,6 +18,14 @@ public class DriverRequest {
         drivers = postResponse.getBody();
         return drivers;
     }
+    public static InDriverDTO[] getDriverswithSeniority(int i) throws UnirestException {
+        InDriverDTO[] drivers;
+        HttpResponse<InDriverDTO[]> postResponse = Unirest.get("http://localhost:8080/driver/experience")
+                .queryString("seniority", i)
+                .asObject(InDriverDTO[].class);
+        drivers = postResponse.getBody();
+        return drivers;
+    }
     public static InDriverDTO[] getAviableDrivers() throws UnirestException {
         InDriverDTO[] drivers;
         HttpResponse<InDriverDTO[]> postResponse = Unirest.get("http://localhost:8080/driver/byStatus")

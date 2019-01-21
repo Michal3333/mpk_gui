@@ -42,20 +42,20 @@ public class CourseBusRequest {
                 .body(driverDTO)
                 .asJson();
     }
-    public static void updateRoute(StopDTO stopDTO, UUID id) throws UnirestException {
+    public static void updateRoute(Long is, UUID id) throws UnirestException {
         HttpResponse<JsonNode> postResponse = Unirest.post("http://localhost:8080/busCourse/{id}/route")
                 .header("accept", "application/json")
                 .header("Content-Type", "application/json")
                 .routeParam("id", id.toString())
-                .body(stopDTO)
+                .queryString("routeNumber",is)
                 .asJson();
     }
-    public static void updateBus(BusDTO busDTO, UUID id) throws UnirestException {
+    public static void updateBus(Long busId, UUID id) throws UnirestException {
         HttpResponse<JsonNode> postResponse = Unirest.post("http://localhost:8080/busCourse/{id}/bus")
                 .header("accept", "application/json")
                 .header("Content-Type", "application/json")
                 .routeParam("id", id.toString())
-                .body(busDTO)
+                .queryString("vehicleNumber",busId)
                 .asJson();
     }
 
