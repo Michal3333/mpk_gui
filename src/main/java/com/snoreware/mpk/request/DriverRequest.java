@@ -8,10 +8,20 @@ import com.snoreware.mpk.entities.DriverEntity;
 import com.snoreware.mpk.model.DriverDTO;
 import com.snoreware.mpk.modelIn.InDriverDTO;
 
+import java.util.UUID;
+
 public class DriverRequest {
     public static InDriverDTO[] getDrivers() throws UnirestException {
         InDriverDTO[] drivers;
         HttpResponse<InDriverDTO[]> postResponse = Unirest.get("http://localhost:8080/driver/all")
+                .asObject(InDriverDTO[].class);
+        drivers = postResponse.getBody();
+        return drivers;
+    }
+    public static InDriverDTO[] getAviableDrivers() throws UnirestException {
+        InDriverDTO[] drivers;
+        HttpResponse<InDriverDTO[]> postResponse = Unirest.get("http://localhost:8080/driver/byStatus")
+                .queryString("onlyAvailable",true)
                 .asObject(InDriverDTO[].class);
         drivers = postResponse.getBody();
         return drivers;
@@ -36,14 +46,15 @@ public class DriverRequest {
                 .routeParam("id", driverDTO.getDriverId().toString())
                 .asJson();
     }
-    public static DriverDTO getDriver(InDriverDTO driver) throws UnirestException {
+    public static DriverDTO getDriver(UUID driver) throws UnirestException {
         HttpResponse<DriverDTO> postResponse = Unirest.get("http://localhost:8080/driver/{id}")
                 .header("accept", "application/json")
                 .header("Content-Type", "application/json")
-                .routeParam("id",driver.getDriverId().toString())
+                .routeParam("id",driver.toString())
                 .asObject(DriverDTO.class);
         return postResponse.getBody();
     }
+
 
 
 

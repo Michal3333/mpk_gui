@@ -19,6 +19,14 @@ public class BusRequest {
         buses = postResponse.getBody();
         return buses;
     }
+    public static Long[] getWorkingBuses() throws UnirestException {
+        Long[] buses;
+        HttpResponse<Long[]> postResponse = Unirest.get("http://localhost:8080/bus/byStatus")
+                .queryString("notBroken",true)
+                .asObject(Long[].class);
+        buses = postResponse.getBody();
+        return buses;
+    }
     public static void addBus(VehicleDTO vehicleDTO) throws UnirestException {
         HttpResponse<JsonNode> postResponse = Unirest.post("http://localhost:8080/bus/add")
                 .header("accept", "application/json")
@@ -57,5 +65,26 @@ public class BusRequest {
                 .asObject(BusDTO.class);
         return postResponse.getBody();
     }
+    public static Long[] getLowFlorBuses() throws UnirestException {
+        Long[] buses;
+        HttpResponse<Long[]> postResponse = Unirest.get("http://localhost:8080/bus/lowFloor").asObject(Long[].class);
+        buses = postResponse.getBody();
+        return buses;
+    }
+    public static Long[] getArticulatedBuses() throws UnirestException {
+        Long[] buses;
+        HttpResponse<Long[]> postResponse = Unirest.get("http://localhost:8080/bus/articulated").asObject(Long[].class);
+        buses = postResponse.getBody();
+        return buses;
+    }
+    public static Long[] getLowFlorandArticulatedBuses() throws UnirestException {
+        Long[] buses;
+        HttpResponse<Long[]> postResponse = Unirest.get("http://localhost:8080/bus/lowFloorAndArt").asObject(Long[].class);
+        buses = postResponse.getBody();
+        return buses;
+
+    }
+
+
 
 }

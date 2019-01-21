@@ -43,11 +43,38 @@ public class EditMenuController implements Initializable {
     public ListView <InStopDTO>StopList;
     public CheckBox checkBox1;
     public CheckBox checkBox2;
+    public TextField searchbar;
+    public Button szukajButton;
     private ObservableList<InDriverDTO> wypelnienieDriver = FXCollections.observableArrayList();
     private ObservableList<Long> wypelnienieBus = FXCollections.observableArrayList();
     private ObservableList<InStopDTO> wypelnienieStop = FXCollections.observableArrayList();
     private ObservableList<Long> wypelnienieTram = FXCollections.observableArrayList();
+    private ObservableList<InDriverDTO> filtrwypelnienieDriver = FXCollections.observableArrayList();
+    private ObservableList<Long> filtrwypelnienieBus = FXCollections.observableArrayList();
+    private ObservableList<InStopDTO> filtrwypelnienieStop = FXCollections.observableArrayList();
+    private ObservableList<Long> filtrwypelnienieTram = FXCollections.observableArrayList();
+    private Boolean isFiltr;
 
+    public boolean isNumeric(String str)
+    {
+        try
+        {
+            double d = Double.parseDouble(str);
+        }
+        catch(NumberFormatException nfe)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public void showAlert(String info) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Blad wprowadzonych danych");
+        alert.setContentText(info);
+        alert.showAndWait();
+    }
 
     public void clear(){
         textField1.clear();
@@ -137,14 +164,23 @@ public class EditMenuController implements Initializable {
     public void updateBusList(){
         wypelnienieBus.clear();
         FailuresController.updateBus(wypelnienieBus, busList);
+        if(isFiltr){
+            searchFunction();
+        }
     }
     public void updateTramList(){
         wypelnienieTram.clear();
         FailuresController.updateTrams(wypelnienieTram, tramList);
+        if(isFiltr){
+            searchFunction();
+        }
     }
     public void updateDriverList(){
         wypelnienieDriver.clear();
         SalaryUpgradeController.updateDr(wypelnienieDriver, driverList);
+        if(isFiltr){
+            searchFunction();
+        }
     }
     public void updateStopList(){
         wypelnienieStop.clear();
@@ -152,9 +188,35 @@ public class EditMenuController implements Initializable {
             InStopDTO[] stops = StopRequest.getStops();
             wypelnienieStop.addAll(Arrays.asList(stops));
             StopList.setItems(wypelnienieStop);
+            if(isFiltr){
+                searchFunction();
+            }
         } catch (UnirestException e) {
             e.printStackTrace();
         }
+    }
+
+    public Boolean checkContainers(int tab){
+        String blad = "";
+        if(tab == 1){
+            if(isNumeric(textField2.getText()) || textField2.getText().isEmpty())blad += "nie podano ilosci wagonow lub podana wartosc nie jest prawidlowa";
+            if(!blad.isEmpty())showAlert(blad);
+            return blad.isEmpty();
+        }
+        else if(tab == 2){
+            if(textField1.getText().isEmpty())blad+="nie podano imienia kierowcy lub podana wartosc jest nie poprawna\n";
+            if(textField2.getText().isEmpty())blad+="nie podano nazwiska kierowcy lub podana wartosc jest nie poprawna\n";
+            if(textField3.getText().isEmpty())blad+="nie podano plci kierowcy lub podana wartosc jest nie poprawna\n";
+            if(isNumeric(textField4.getText()) || textField4.getText().isEmpty())blad+="nie podano placy kierowcy lub podana wartosc jest nie poprawna\n";
+            if(!blad.isEmpty())showAlert(blad);
+            return blad.isEmpty();
+        }
+        else {
+            if(textField1.getText().isEmpty())blad+="nie podano nazwy przystanku lub podana wartosc jest nie poprawna\n";
+            if(!blad.isEmpty())showAlert(blad);
+            return blad.isEmpty();
+        }
+
     }
 
 
@@ -177,31 +239,39 @@ public class EditMenuController implements Initializable {
            updateBusList();
        }
        else if(tab == 1){
-           VehicleDTO vehicleDTO = new VehicleDTO();
-           vehicleDTO.setLowFloor(check1);
-           vehicleDTO.setNumberOfWagons(Integer.parseInt(labels[1]));
-           TramRequest.addTram(vehicleDTO);
-           updateTramList();
+           if(checkContainers(tab)){
+               VehicleDTO vehicleDTO = new VehicleDTO();
+               vehicleDTO.setLowFloor(check1);
+               vehicleDTO.setNumberOfWagons(Integer.parseInt(labels[1]));
+               TramRequest.addTram(vehicleDTO);
+               updateTramList();
+           }
        }
        else if(tab == 2){
-           DriverDTO driverDTO = new DriverDTO();
-           driverDTO.setName(labels[0]);
-           driverDTO.setSurname(labels[1]);
-           driverDTO.setSex(labels[2]);
-           driverDTO.setSalary(Float.parseFloat(labels[3]));
-           DriverRequest.addDriver(driverDTO);
-           updateDriverList();
+           if(checkContainers(tab)){
+               DriverDTO driverDTO = new DriverDTO();
+               driverDTO.setName(labels[0]);
+               driverDTO.setSurname(labels[1]);
+               driverDTO.setSex(labels[2]);
+               driverDTO.setSalary(Float.parseFloat(labels[3]));
+               DriverRequest.addDriver(driverDTO);
+               updateDriverList();
+           }
        }
        else if(tab == 3){
-           StopDTO stopDTO = new StopDTO();
-           stopDTO.setStopName(labels[0]);
-           StopRequest.addStop(stopDTO);
-            updateStopList();
+           if(checkContainers(tab)){
+               StopDTO stopDTO = new StopDTO();
+               stopDTO.setStopName(labels[0]);
+               StopRequest.addStop(stopDTO);
+               updateStopList();
+           }
+
        }
        clear();
     }
 
     public void update(ActionEvent actionEvent) throws UnirestException {
+
         int tab = tabs.getSelectionModel().getSelectedIndex();
         String [] labels = new String[5];
         labels[0] = textField1.getText();
@@ -212,42 +282,62 @@ public class EditMenuController implements Initializable {
         boolean check1 = checkBox1.isSelected();
         boolean check2 = checkBox2.isSelected();
         if(tab == 0){
-            Long id = busList.getSelectionModel().getSelectedItem();
-            VehicleDTO vehicleDTO = new VehicleDTO();
-            vehicleDTO.setVehicleNumber(id);
-            vehicleDTO.setArticulated(check2);
-            vehicleDTO.setLowFloor(check1);
-            BusRequest.updateBus(vehicleDTO);
-            updateBusList();
+            if(busList.getSelectionModel().getSelectedItem() !=null){
+                Long id = busList.getSelectionModel().getSelectedItem();
+                VehicleDTO vehicleDTO = new VehicleDTO();
+                vehicleDTO.setVehicleNumber(id);
+                vehicleDTO.setArticulated(check2);
+                vehicleDTO.setLowFloor(check1);
+                BusRequest.updateBus(vehicleDTO);
+                updateBusList();
+            }
+            else showAlert("nie zaznaczono autobusu do zmiany");
+
         }
         else if(tab == 1){
-            Long id  = tramList.getSelectionModel().getSelectedItem();
-            VehicleDTO vehicleDTO = new VehicleDTO();
-            vehicleDTO.setVehicleNumber(id);
-            vehicleDTO.setLowFloor(check1);
-            vehicleDTO.setNumberOfWagons(Integer.parseInt(labels[1]));
-            TramRequest.updateTram(vehicleDTO);
-            updateTramList();
+            if(tramList.getSelectionModel().getSelectedItem() != null){
+                if(checkContainers(tab)){
+                    Long id  = tramList.getSelectionModel().getSelectedItem();
+                    VehicleDTO vehicleDTO = new VehicleDTO();
+                    vehicleDTO.setVehicleNumber(id);
+                    vehicleDTO.setLowFloor(check1);
+                    vehicleDTO.setNumberOfWagons(Integer.parseInt(labels[1]));
+                    TramRequest.updateTram(vehicleDTO);
+                    updateTramList();
+                }
+            }
+            else showAlert("nie zaznaczono tramwaju do zmiany");
         }
         else if(tab == 2){
-            DriverDTO driver = DriverRequest.getDriver(driverList.getSelectionModel().getSelectedItem());
-            DriverDTO driverDTO = new DriverDTO();
-            driverDTO.setDriverId(driver.getDriverId());
-            driverDTO.setName(labels[0]);
-            driverDTO.setSurname(labels[1]);
-            driverDTO.setSex(labels[2]);
-            driverDTO.setSalary(Float.parseFloat(labels[3]));
-            DriverRequest.updateDriver(driverDTO);
-            updateDriverList();
+            if(driverList.getSelectionModel().getSelectedItem() != null){
+                if(checkContainers(tab)){
+                    DriverDTO driver = DriverRequest.getDriver(driverList.getSelectionModel().getSelectedItem().getDriverId());
+                    DriverDTO driverDTO = new DriverDTO();
+                    driverDTO.setDriverId(driver.getDriverId());
+                    driverDTO.setName(labels[0]);
+                    driverDTO.setSurname(labels[1]);
+                    driverDTO.setSex(labels[2]);
+                    driverDTO.setSalary(Float.parseFloat(labels[3]));
+                    DriverRequest.updateDriver(driverDTO);
+                    updateDriverList();
+                }
+            }
+            else showAlert("nie zaznaczono kierowcy do zmiany");
+
         }
         else if(tab == 3){
-            InStopDTO stop =StopList.getSelectionModel().getSelectedItem();
-            stop.setStopId(stop.getStopId());
-            stop.setStopName(labels[0]);
-            StopRequest.updateStop(stop);
-            updateStopList();
-        }
+            if(StopList.getSelectionModel().getSelectedItem() != null){
+                if(checkContainers(tab)){
+                    InStopDTO stop =StopList.getSelectionModel().getSelectedItem();
+                    stop.setStopId(stop.getStopId());
+                    stop.setStopName(labels[0]);
+                    StopRequest.updateStop(stop);
+                    updateStopList();
+                }
+            }
+            else showAlert("nie zaznaczono przystanku do zmiany");
 
+        }
         clear();
     }
 
@@ -256,32 +346,48 @@ public class EditMenuController implements Initializable {
 
 
         if(tab == 0){
-            Long id = busList.getSelectionModel().getSelectedItem();
-            VehicleDTO vehicleDTO = new VehicleDTO();
-            vehicleDTO.setVehicleNumber(id);
-            BusRequest.deleteBus(vehicleDTO);
-            updateBusList();
+            if(busList.getSelectionModel().getSelectedItem() != null){
+                Long id = busList.getSelectionModel().getSelectedItem();
+                VehicleDTO vehicleDTO = new VehicleDTO();
+                vehicleDTO.setVehicleNumber(id);
+                BusRequest.deleteBus(vehicleDTO);
+                updateBusList();
+            }
+            else showAlert("nie zaznaczono tramwaju do usuniecia");
+
         }
         else if(tab == 1){
-            Long id = tramList.getSelectionModel().getSelectedItem();
-            VehicleDTO vehicleDTO = new VehicleDTO();
-            vehicleDTO.setVehicleNumber(id);
-            TramRequest.deleteTram(vehicleDTO);
-            updateTramList();
+            if(tramList.getSelectionModel().getSelectedItem() != null){
+                Long id = tramList.getSelectionModel().getSelectedItem();
+                VehicleDTO vehicleDTO = new VehicleDTO();
+                vehicleDTO.setVehicleNumber(id);
+                TramRequest.deleteTram(vehicleDTO);
+                updateTramList();
+            }
+            else showAlert("nie zaznaczono autobusu do usuniecia");
+
         }
         else if(tab == 2){
-            InDriverDTO driver = driverList.getSelectionModel().getSelectedItem();
-            DriverDTO driverDTO = new DriverDTO();
-            driverDTO.setDriverId(driver.getDriverId());
-            DriverRequest.deleteDriver(driverDTO);
-            updateDriverList();
+            if(driverList.getSelectionModel().getSelectedItem() != null){
+                InDriverDTO driver = driverList.getSelectionModel().getSelectedItem();
+                DriverDTO driverDTO = new DriverDTO();
+                driverDTO.setDriverId(driver.getDriverId());
+                DriverRequest.deleteDriver(driverDTO);
+                updateDriverList();
+            }
+            else showAlert("nie zaznaczono kieorwcy do usuniecia");
+
         }
         else if(tab == 3){
-            InStopDTO stop = StopList.getSelectionModel().getSelectedItem();
-            StopDTO stopDTO = new StopDTO();
-            stopDTO.setStopId(stop.getStopId());
-            StopRequest.deleteStop(stopDTO);
-            updateStopList();
+            if(StopList.getSelectionModel().getSelectedItem() != null){
+                InStopDTO stop = StopList.getSelectionModel().getSelectedItem();
+                StopDTO stopDTO = new StopDTO();
+                stopDTO.setStopId(stop.getStopId());
+                StopRequest.deleteStop(stopDTO);
+                updateStopList();
+            }
+            else showAlert("nie zaznaczono przystanku do usuniecia");
+
         }
 
         clear();
@@ -305,36 +411,45 @@ public class EditMenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-      setLabelsForBus();
+        isFiltr = false;
+        setLabelsForBus();
+
     }
 
     public void wybierzBus(MouseEvent mouseEvent) throws UnirestException {
-        Long id = busList.getSelectionModel().getSelectedItem();
-        BusDTO bus = BusRequest.getBus(id);
-        checkBox1.setSelected(bus.getLowFloor());
-        checkBox2.setSelected(bus.getArticulated());
+        if(busList.getSelectionModel().getSelectedItem() != null){
+            Long id = busList.getSelectionModel().getSelectedItem();
+            BusDTO bus = BusRequest.getBus(id);
+            checkBox1.setSelected(bus.getLowFloor());
+            checkBox2.setSelected(bus.getArticulated());
+        }
     }
 
     public void wybierzTram(MouseEvent mouseEvent) throws UnirestException {
-        Long id = tramList.getSelectionModel().getSelectedItem();
-        TramDTO tram = TramRequest.getTram(id);
-        checkBox1.setSelected(tram.getLowFloor());
-        textField2.setText(Integer.toString(tram.getNumberOfWagons()));
+        if(tramList.getSelectionModel().getSelectedItem() != null){
+            Long id = tramList.getSelectionModel().getSelectedItem();
+            TramDTO tram = TramRequest.getTram(id);
+            checkBox1.setSelected(tram.getLowFloor());
+            textField2.setText(Integer.toString(tram.getNumberOfWagons()));
+        }
     }
 
     public void wybierzDriver(MouseEvent mouseEvent) throws UnirestException {
-        InDriverDTO driverid = driverList.getSelectionModel().getSelectedItem();
-        DriverDTO driver = DriverRequest.getDriver(driverid);
-        textField1.setText(driver.getName());
-        textField2.setText(driver.getSurname());
-        textField3.setText(driver.getSex());
-        textField4.setText(driver.getSalary().toString());
-
+        if(driverList.getSelectionModel().getSelectedItem() != null){
+            InDriverDTO driverid = driverList.getSelectionModel().getSelectedItem();
+            DriverDTO driver = DriverRequest.getDriver(driverid.getDriverId());
+            textField1.setText(driver.getName());
+            textField2.setText(driver.getSurname());
+            textField3.setText(driver.getSex());
+            textField4.setText(driver.getSalary().toString());
+        }
     }
 
     public void wybierzStop(MouseEvent mouseEvent) throws UnirestException {
-        InStopDTO stop= StopList.getSelectionModel().getSelectedItem();
-        textField1.setText(stop.getStopName());
+        if(StopList.getSelectionModel().getSelectedItem() != null){
+            InStopDTO stop= StopList.getSelectionModel().getSelectedItem();
+            textField1.setText(stop.getStopName());
+        }
     }
 
 
@@ -353,5 +468,73 @@ public class EditMenuController implements Initializable {
         Parent root = loader.load();
         Scene scene = new Scene(root);
         return scene;
+    }
+
+    public void wyczyscFiltr(ActionEvent actionEvent) {
+        isFiltr = false;
+        searchbar.setText("");
+        int tab = tabs.getSelectionModel().getSelectedIndex();
+        if(tab == 0){
+            busList.setItems(wypelnienieBus);
+        }
+        else if(tab == 1 ){
+            tramList.setItems(wypelnienieTram);
+        }
+        else if(tab == 2){
+            driverList.setItems(wypelnienieDriver);
+        }
+        else if(tab == 3){
+            StopList.setItems(wypelnienieStop);
+        }
+    }
+
+    public  void searchFunction(){
+        int tab = tabs.getSelectionModel().getSelectedIndex();
+        if(!searchbar.getText().isEmpty()){
+            if(tab == 0){
+                if(isNumeric(searchbar.getText())){
+                    filtrwypelnienieBus.clear();
+                    for (Long i: wypelnienieBus) {
+                        if(i.toString().contains(searchbar.getText()))filtrwypelnienieBus.add(i);
+                    }
+                    busList.setItems(filtrwypelnienieBus);
+                    isFiltr = true;
+                }
+            }
+            else if(tab == 2){
+                filtrwypelnienieDriver.clear();
+                for(InDriverDTO driver : wypelnienieDriver){
+                    if(driver.toString().contains(searchbar.getText()))filtrwypelnienieDriver.add(driver);
+                }
+                driverList.setItems(filtrwypelnienieDriver);
+                isFiltr = true;
+
+            }
+            else if(tab == 1){
+                if(isNumeric(searchbar.getText())){
+                    System.out.println("");//xd
+                    filtrwypelnienieTram.clear();
+                    for (Long i: wypelnienieTram) {
+                        if(i.toString().contains(searchbar.getText()))filtrwypelnienieTram.add(i);
+                    }
+                    tramList.setItems(filtrwypelnienieTram);
+                    isFiltr = true;
+
+                }
+            }
+            else if (tab == 2){
+                filtrwypelnienieStop.clear();
+                for(InStopDTO stop : wypelnienieStop){
+                    if(stop.toString().contains(searchbar.getText()))filtrwypelnienieStop.add(stop);
+                }
+                StopList.setItems(filtrwypelnienieStop);
+                isFiltr = true;
+
+            }
+        }
+
+    }
+    public void szukaj(ActionEvent actionEvent) {
+      searchFunction();
     }
 }

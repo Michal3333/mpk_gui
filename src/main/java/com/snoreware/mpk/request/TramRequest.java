@@ -16,6 +16,14 @@ public class TramRequest {
         trams = postResponse.getBody();
         return trams;
     }
+    public static Long[] getWorkingTrams() throws UnirestException {
+        Long[] trams;
+        HttpResponse<Long[]> postResponse = Unirest.get("http://localhost:8080/tram/byStatus")
+                .queryString("notBroken",true)
+                .asObject(Long[].class);
+        trams = postResponse.getBody();
+        return trams;
+    }
     public static void addTram(VehicleDTO vehicleDTO) throws UnirestException {
         HttpResponse<JsonNode> postResponse = Unirest.post("http://localhost:8080/tram/add")
                 .header("accept", "application/json")

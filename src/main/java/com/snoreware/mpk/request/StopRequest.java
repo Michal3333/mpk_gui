@@ -23,7 +23,7 @@ public class StopRequest {
     }
     public static InStopDTO[] getWorkingStops() throws UnirestException {
         InStopDTO[] stops;
-        HttpResponse<InStopDTO[]> postResponse = Unirest.get("http://localhost:8080/stop/all")
+        HttpResponse<InStopDTO[]> postResponse = Unirest.get("http://localhost:8080/stop/byStatus")
                 .queryString("notBroken", true)
                 .asObject(InStopDTO[].class);
         stops = postResponse.getBody();

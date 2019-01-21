@@ -9,7 +9,7 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.snoreware.mpk.guiControllers.EditRouteController">
    <children>
-      <ComboBox fx:id="combo" layoutX="532.0" layoutY="90.0" onMouseClicked="#wybierzstopcombo" prefHeight="25.0" prefWidth="196.0" />
+      <ComboBox fx:id="combo" layoutX="462.0" layoutY="91.0" prefHeight="25.0" prefWidth="196.0" />
       <ListView fx:id="ListaTras" layoutX="42.0" layoutY="52.0" onMouseClicked="#selectTrasa" prefHeight="519.0" prefWidth="294.0" />
       <ListView fx:id="ListaSops" layoutX="530.0" layoutY="147.0" onMouseClicked="#selectStop" prefHeight="200.0" prefWidth="200.0" />
       <Button fx:id="up" layoutX="747.0" layoutY="216.0" mnemonicParsing="false" onAction="#up" text="up" />
@@ -17,9 +17,11 @@
       <Button fx:id="editmode" layoutX="560.0" layoutY="40.0" mnemonicParsing="false" onAction="#editMode" prefHeight="25.0" prefWidth="146.0" text="Edit/Add Mode" />
       <Label layoutX="502.0" layoutY="387.0" text="Route Number" />
       <TextField fx:id="textField" layoutX="613.0" layoutY="383.0" />
-      <Button fx:id="addRoute" layoutX="469.0" layoutY="484.0" mnemonicParsing="false" onAction="#addRoute" prefHeight="54.0" prefWidth="84.0" text="Add Route" />
-      <Button fx:id="clear" layoutX="374.0" layoutY="484.0" mnemonicParsing="false" onAction="#clear" prefHeight="54.0" prefWidth="84.0" text="Clear" />
-      <Button fx:id="delete" layoutX="560.0" layoutY="484.0" mnemonicParsing="false" onAction="#delete" prefHeight="54.0" prefWidth="84.0" text="Delete" />
-      <Button layoutX="688.0" layoutY="538.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="92.0" text="home" onAction="#goHome"/>
+      <Button fx:id="addRoute" layoutX="446.0" layoutY="484.0" mnemonicParsing="false" onAction="#addRoute" prefHeight="54.0" prefWidth="66.0" text="Add Route" />
+      <Button fx:id="clear" layoutX="374.0" layoutY="484.0" mnemonicParsing="false" onAction="#clear" prefHeight="54.0" prefWidth="66.0" text="Clear" />
+      <Button fx:id="delete" layoutX="518.0" layoutY="484.0" mnemonicParsing="false" onAction="#delete" prefHeight="54.0" prefWidth="66.0" text="Delete" />
+      <Button layoutX="688.0" layoutY="538.0" mnemonicParsing="false" onAction="#goHome" prefHeight="47.0" prefWidth="92.0" text="home" />
+      <Button fx:id="addStop" layoutX="695.0" layoutY="91.0" mnemonicParsing="false" onAction="#addStop" text="Add Stop" />
+      <Button fx:id="update" layoutX="594.0" layoutY="484.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="66.0" text="Update" onAction="#editRoute"/>
    </children>
 </AnchorPane>

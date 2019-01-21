@@ -21,10 +21,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
@@ -43,69 +40,93 @@ public class FailuresController implements Initializable {
     private ObservableList<InStopDTO> wypelnienieStop = FXCollections.observableArrayList();
     private ObservableList<Long> wypelnienieTram = FXCollections.observableArrayList();
 
+    public void showAlert(String info) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Blad wprowadzonych danych");
+        alert.setContentText(info);
+        alert.showAndWait();
+    }
+
     public void zglos(ActionEvent actionEvent) throws UnirestException {
         int tab = tabs.getSelectionModel().getSelectedIndex();
         if(tab == 0){
-            InStopDTO stop = stopsL.getSelectionModel().getSelectedItem();
-            StopRequest.stopFailure(stop);
-            updateStopList();
+            if(stopsL.getSelectionModel().getSelectedItem() != null){
+                InStopDTO stop = stopsL.getSelectionModel().getSelectedItem();
+                StopRequest.stopFailure(stop);
+                updateStopList();
+            }
+            else  showAlert("nie zaznaczono przystanku do zmiany");
         }
         else if(tab == 1){
-            Long id = busesL.getSelectionModel().getSelectedItem();
-            BusRequest.busFailure(id);
-            updateBusList();
+            if(busesL.getSelectionModel().getSelectedItem() != null){
+                Long id = busesL.getSelectionModel().getSelectedItem();
+                BusRequest.busFailure(id);
+                updateBusList();
+            }
+            else  showAlert("nie zaznaczono autobusu do zmiany");
         }
         else if(tab == 2){
-            Long id = tramsL.getSelectionModel().getSelectedItem();
-            TramRequest.tramFailure(id);
-            updateTramList();
+            if(tramsL.getSelectionModel().getSelectedItem() != null){
+                Long id = tramsL.getSelectionModel().getSelectedItem();
+                TramRequest.tramFailure(id);
+                updateTramList();
+            }
+            else  showAlert("nie zaznaczono tramwaju do zmiany");
         }
         button.setVisible(false);
         label.setVisible(false);
     }
 
     public void tramsClicked(MouseEvent mouseEvent) throws UnirestException {
-        button.setVisible(true);
-        label.setVisible(true);
-        Long id = tramsL.getSelectionModel().getSelectedItem();
-        TramDTO tram = TramRequest.getTram(id);
-        if(tram.getBreakdown()){
-            label.setText("awaria");
-            button.setText("napraw");
+        if(tramsL.getSelectionModel().getSelectedItem() != null){
+            button.setVisible(true);
+            label.setVisible(true);
+            Long id = tramsL.getSelectionModel().getSelectedItem();
+            TramDTO tram = TramRequest.getTram(id);
+            if(tram.getBreakdown()){
+                label.setText("awaria");
+                button.setText("napraw");
+            }
+            else{
+                label.setText("dziala");
+                button.setText("zglos awarie");
+            }
         }
-        else{
-            label.setText("dziala");
-            button.setText("zglos awarie");
-        }
+
     }
 
     public void busesClicked(MouseEvent mouseEvent) throws UnirestException {
-        button.setVisible(true);
-        label.setVisible(true);
-        Long id = busesL.getSelectionModel().getSelectedItem();
-        BusDTO bus = BusRequest.getBus(id);
-        if(bus.getBreakdown()){
-            label.setText("awaria bus");
-            button.setText("napraw");
-        }
-        else{
-            label.setText("dziala");
-            button.setText("zglos awarie");
+        if(busesL.getSelectionModel().getSelectedItem() != null){
+            button.setVisible(true);
+            label.setVisible(true);
+            Long id = busesL.getSelectionModel().getSelectedItem();
+            BusDTO bus = BusRequest.getBus(id);
+            if(bus.getBreakdown()){
+                label.setText("awaria bus");
+                button.setText("napraw");
+            }
+            else{
+                label.setText("dziala");
+                button.setText("zglos awarie");
+            }
         }
     }
 
     public void stopsClicked(MouseEvent mouseEvent) throws UnirestException {
-        button.setVisible(true);
-        label.setVisible(true);
-        InStopDTO stopid = stopsL.getSelectionModel().getSelectedItem();
-        StopDTO stop = StopRequest.getStop(stopid);
-        if(stop.getStopBreakdown()){
-            label.setText("awaria");
-            button.setText("napraw");
-        }
-        else{
-            label.setText("dziala");
-            button.setText("zglos awarie");
+        if(stopsL.getSelectionModel().getSelectedItem() != null){
+            button.setVisible(true);
+            label.setVisible(true);
+            InStopDTO stopid = stopsL.getSelectionModel().getSelectedItem();
+            StopDTO stop = StopRequest.getStop(stopid);
+            if(stop.getStopBreakdown()){
+                label.setText("awaria");
+                button.setText("napraw");
+            }
+            else{
+                label.setText("dziala");
+                button.setText("zglos awarie");
+            }
         }
     }
 

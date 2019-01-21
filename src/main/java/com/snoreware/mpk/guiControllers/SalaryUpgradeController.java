@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -34,6 +35,27 @@ public class SalaryUpgradeController implements Initializable {
     public TextField upgrade;
     private ObservableList<InDriverDTO> wypelnienieDriver = FXCollections.observableArrayList();
 
+    public void showAlert(String info) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Blad wprowadzonych danych");
+        alert.setContentText(info);
+        alert.showAndWait();
+    }
+
+    public boolean isNumeric(String str)
+    {
+        try
+        {
+            double d = Double.parseDouble(str);
+        }
+        catch(NumberFormatException nfe)
+        {
+            return false;
+        }
+        return true;
+    }
+
     public void updateDriverList(){
         wypelnienieDriver.clear();
         updateDr(wypelnienieDriver, driverList);
@@ -50,32 +72,43 @@ public class SalaryUpgradeController implements Initializable {
     }
 
     public void zatwierdz(ActionEvent actionEvent) throws UnirestException {
-        InDriverDTO driverid = driverList.getSelectionModel().getSelectedItem();
-        DriverDTO driver = DriverRequest.getDriver(driverid);
-        DriverDTO driverDTO = new DriverDTO();
-        driverDTO.setDriverId(driver.getDriverId());
-        driverDTO.setSalary(driver.getSalary() + Float.parseFloat(upgrade.getText()));
-        DriverRequest.updateDriver(driverDTO);
-        updateDriverList();
-        name.setVisible(false);
-        surname.setVisible(false);
-        sex.setVisible(false);
-        salary.setVisible(false);
-        seniority.setVisible(false);
+        if(driverList.getSelectionModel().getSelectedItem() != null){
+            if(isNumeric(upgrade.getText()) && !upgrade.getText().isEmpty()){
+                InDriverDTO driverid = driverList.getSelectionModel().getSelectedItem();
+                DriverDTO driver = DriverRequest.getDriver(driverid.getDriverId());
+                DriverDTO driverDTO = new DriverDTO();
+                driverDTO.setDriverId(driver.getDriverId());
+                if(driver.getSalary() +Float.parseFloat(upgrade.getText()) > 0 ){
+                    driverDTO.setSalary(driver.getSalary() + Float.parseFloat(upgrade.getText()));
+                    DriverRequest.updateDriver(driverDTO);
+                    updateDriverList();
+                    name.setVisible(false);
+                    surname.setVisible(false);
+                    sex.setVisible(false);
+                    salary.setVisible(false);
+                    seniority.setVisible(false);
+                }
+                else showAlert("kierowca nie moze miec ujemnego wynagrodzenia");
+            }
+            else showAlert("nie wprowadzono wartosci pola zmiana lub wprowadzona wartpsc jest niepoprawna");
+        }
+
     }
 
     public void selectDriver(MouseEvent mouseEvent) throws UnirestException {
-        name.setVisible(true);
-        surname.setVisible(true);
-        sex.setVisible(true);
-        salary.setVisible(true);
-        seniority.setVisible(true);
-        InDriverDTO driverid = driverList.getSelectionModel().getSelectedItem();
-        DriverDTO driver = DriverRequest.getDriver(driverid);
-        name.setText("Imie: "+ driver.getName());
-        surname.setText("Nazwisko :"+ driver.getSurname());
-        sex.setText("Plec: "+ driver.getSex());
-        salary.setText("Placa: "+ driver.getSalary().toString());
+        if(driverList.getSelectionModel().getSelectedItem() != null){
+            name.setVisible(true);
+            surname.setVisible(true);
+            sex.setVisible(true);
+            salary.setVisible(true);
+            seniority.setVisible(true);
+            InDriverDTO driverid = driverList.getSelectionModel().getSelectedItem();
+            DriverDTO driver = DriverRequest.getDriver(driverid.getDriverId());
+            name.setText("Imie: "+ driver.getName());
+            surname.setText("Nazwisko :"+ driver.getSurname());
+            sex.setText("Plec: "+ driver.getSex());
+            salary.setText("Placa: "+ driver.getSalary().toString());
+        }
     }
 
     @Override

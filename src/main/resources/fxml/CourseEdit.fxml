@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.snoreware.mpk.guiControllers.CourseEditController">
@@ -14,22 +15,25 @@
        <Label fx:id="driverLAbel" layoutX="414.0" layoutY="142.0" text="Driver" />
        <Label fx:id="routeLabel" layoutX="414.0" layoutY="273.0" text="Route" />
        <Label fx:id="vehicleLAble" layoutX="414.0" layoutY="209.0" text="Vehicle" />
-       <ComboBox fx:id="driverCombo" layoutX="560.0" layoutY="147.0" prefWidth="150.0" />
-       <ComboBox fx:id="routeCombo" layoutX="515.0" layoutY="205.0" prefWidth="150.0" />
-       <ComboBox fx:id="vehicleCombo" layoutX="515.0" layoutY="269.0" prefWidth="150.0" />
-       <CheckBox fx:id="articulated" layoutX="430.0" layoutY="345.0" mnemonicParsing="false" text="Articulated" />
-       <CheckBox fx:id="lowFlor" layoutX="430.0" layoutY="400.0" mnemonicParsing="false" text="LowFLor" />
-       <Button fx:id="edit" layoutX="524.0" layoutY="64.0" mnemonicParsing="false" text="Edit Mode" onAction="#edit"/>
-       <Button fx:id="add" layoutX="437.0" layoutY="482.0" mnemonicParsing="false" text="Add" onAction="#add"/>
-       <Button fx:id="delete" layoutX="515.0" layoutY="482.0" mnemonicParsing="false" text="DElete" onAction="#delete" />
-       <Button layoutX="703.0" layoutY="537.0" mnemonicParsing="false" text="Home" onAction="#goHome"/>
+       <ComboBox fx:id="driverCombo" layoutX="515.0" layoutY="138.0" prefWidth="150.0" />
+       <ComboBox fx:id="vehicleCombo" layoutX="515.0" layoutY="205.0" prefWidth="150.0" />
+       <ComboBox fx:id="routeCombo" layoutX="515.0" layoutY="269.0" prefWidth="150.0" />
+
+       <CheckBox fx:id="articulated" layoutX="446.0" layoutY="366.0" mnemonicParsing="false" text="Articulated" onAction="#zmienArticulated"/>
+       <CheckBox fx:id="lowFlor" layoutX="456.0" layoutY="411.0" mnemonicParsing="false" text="LowFLor" onAction="#zmienLowFloor"/>
+
+       <Button fx:id="edit" layoutX="524.0" layoutY="64.0" mnemonicParsing="false" onAction="#edit" text="Edit Mode" />
+       <Button fx:id="add" layoutX="437.0" layoutY="482.0" mnemonicParsing="false" onAction="#add" text="Add" />
+       <Button fx:id="delete" layoutX="515.0" layoutY="482.0" mnemonicParsing="false" onAction="#delete" text="Delete" />
+       <Button fx:id="editCourse" layoutX="595.0" layoutY="482.0" mnemonicParsing="false" onAction="#editCourse" text="Edit" />
+       <Button layoutX="703.0" layoutY="537.0" mnemonicParsing="false" onAction="#goHome" text="Home" />
       <TabPane layoutX="21.0" layoutY="24.0" prefHeight="549.0" prefWidth="267.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Kursy Autobuswe">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="228.0" prefWidth="229.0">
                      <children>
-                        <ListView fx:id="BusList" layoutY="4.0" prefHeight="513.0" prefWidth="267.0" onMouseClicked="#selectBus"/>
+                        <ListView fx:id="BusList" layoutY="4.0" onMouseClicked="#selectBus" prefHeight="513.0" prefWidth="267.0" />
                      </children></AnchorPane>
             </content>
           </Tab>
@@ -40,6 +44,8 @@
           </Tab>
         </tabs>
       </TabPane>
+      <TextField layoutX="379.0" layoutY="309.0" />
+
 
       
    </children>
