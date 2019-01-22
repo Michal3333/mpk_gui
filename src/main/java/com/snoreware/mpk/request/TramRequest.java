@@ -12,13 +12,18 @@ import com.snoreware.mpk.model.VehicleDTO;
 public class TramRequest {
     public static Long[] getTrams() throws UnirestException {
         Long[] trams;
-        HttpResponse<Long[]> postResponse = Unirest.get("http://localhost:8080/tram/all").asObject(Long[].class);
+        HttpResponse<Long[]> postResponse = Unirest.get("http://localhost:8080/tram/all")
+                .header("accept", "application/json")
+                .header("Content-Type", "application/json")
+                .asObject(Long[].class);
         trams = postResponse.getBody();
         return trams;
     }
     public static Long[] getWorkingTrams() throws UnirestException {
         Long[] trams;
         HttpResponse<Long[]> postResponse = Unirest.get("http://localhost:8080/tram/byStatus")
+                .header("accept", "application/json")
+                .header("Content-Type", "application/json")
                 .queryString("notBroken",true)
                 .asObject(Long[].class);
         trams = postResponse.getBody();
@@ -61,5 +66,36 @@ public class TramRequest {
                 .asObject(TramDTO.class);
         return postResponse.getBody();
     }
+    public static Long[] getLowFloorTrams() throws UnirestException {
+        Long[] trams;
+        HttpResponse<Long[]> postResponse = Unirest.get("http://localhost:8080/tram/lowFloor")
+                .header("accept", "application/json")
+                .header("Content-Type", "application/json")
+                .asObject(Long[].class);
+        trams = postResponse.getBody();
+        return trams;
+    }
+    public static Long[] getNumberTrams(int nr) throws UnirestException {
+        Long[] trams;
+        HttpResponse<Long[]> postResponse = Unirest.get("http://localhost:8080/tram/number")
+                .header("accept", "application/json")
+                .header("Content-Type", "application/json")
+                .queryString("minimalWagons",nr)
+                .asObject(Long[].class);
+        trams = postResponse.getBody();
+        return trams;
+    }
+    public static Long[] getNumberLowFloorTrams(int nr) throws UnirestException {
+        Long[] trams;
+        HttpResponse<Long[]> postResponse = Unirest.get("http://localhost:8080/tram/lowFloorAndNumber")
+                .header("accept", "application/json")
+                .header("Content-Type", "application/json")
+                .queryString("minimalWagons",nr)
+                .asObject(Long[].class);
+        trams = postResponse.getBody();
+        return trams;
+    }
+
+
 
 }

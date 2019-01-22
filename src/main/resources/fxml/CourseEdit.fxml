@@ -12,14 +12,16 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.snoreware.mpk.guiControllers.CourseEditController">
    <children>
+       <TextField fx:id="stazUstawianie" layoutX="448.0" layoutY="314.0" />
+       <TextField fx:id="wagonUstawanie" layoutX="448.0" layoutY="368.0" />
        <Label fx:id="driverLAbel" layoutX="414.0" layoutY="142.0" text="Driver" />
        <Label fx:id="routeLabel" layoutX="414.0" layoutY="273.0" text="Route" />
        <Label fx:id="vehicleLAble" layoutX="414.0" layoutY="209.0" text="Vehicle" />
-       <ComboBox fx:id="driverCombo" layoutX="515.0" layoutY="138.0" prefWidth="150.0" onMouseClicked="#ustawMinstaz"/>
-       <ComboBox fx:id="vehicleCombo" layoutX="515.0" layoutY="205.0" prefWidth="150.0" />
+       <ComboBox fx:id="driverCombo" layoutX="515.0" layoutY="138.0" onMouseClicked="#ustawMinstaz" prefWidth="150.0" />
+       <ComboBox fx:id="vehicleCombo" layoutX="515.0" layoutY="205.0" onMouseClicked="#ustawMinWagon" prefWidth="150.0" />
        <ComboBox fx:id="routeCombo" layoutX="515.0" layoutY="269.0" prefWidth="150.0" />
 
-       <CheckBox fx:id="articulated" layoutX="446.0" layoutY="366.0" mnemonicParsing="false" onAction="#zmienArticulated" text="Articulated" />
+       <CheckBox fx:id="articulated" layoutX="456.0" layoutY="372.0" mnemonicParsing="false" onAction="#zmienArticulated" text="Articulated" />
        <CheckBox fx:id="lowFlor" layoutX="456.0" layoutY="411.0" mnemonicParsing="false" onAction="#zmienLowFloor" text="LowFLor" />
 
        <Button fx:id="edit" layoutX="524.0" layoutY="64.0" mnemonicParsing="false" onAction="#edit" text="Edit Mode" />
@@ -27,9 +29,9 @@
        <Button fx:id="delete" layoutX="515.0" layoutY="482.0" mnemonicParsing="false" onAction="#delete" text="Delete" />
        <Button fx:id="editCourse" layoutX="595.0" layoutY="482.0" mnemonicParsing="false" onAction="#editCourse" text="Edit" />
        <Button layoutX="703.0" layoutY="537.0" mnemonicParsing="false" onAction="#goHome" text="Home" />
-      <TabPane layoutX="21.0" layoutY="24.0" prefHeight="549.0" prefWidth="267.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tabs" layoutX="21.0" layoutY="24.0" prefHeight="549.0" prefWidth="267.0" tabClosingPolicy="UNAVAILABLE" >
         <tabs>
-          <Tab text="Kursy Autobuswe">
+          <Tab onSelectionChanged = "#wybierzBus" text="Kursy Autobuswe" >
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="228.0" prefWidth="229.0">
                      <children>
@@ -37,14 +39,17 @@
                      </children></AnchorPane>
             </content>
           </Tab>
-          <Tab text="Kursy Tramwajowe">
+          <Tab onSelectionChanged = "#wybierzTram" text="Kursy Tramwajowe" >
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="228.0" prefWidth="229.0">
+                    <children>
+                        <ListView fx:id="TramList" layoutY="4.0" onMouseClicked="#selectTram" prefHeight="513.0" prefWidth="267.0" />
+                    </children></AnchorPane>
             </content>
           </Tab>
         </tabs>
       </TabPane>
-      <TextField fx:id="stazUstawianie" layoutX="401.0" layoutY="314.0"/>
+
 
 
       

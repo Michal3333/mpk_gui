@@ -3,12 +3,10 @@ package com.snoreware.mpk.guiControllers;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.snoreware.mpk.entities.*;
 import com.snoreware.mpk.model.*;
+import com.snoreware.mpk.modelIn.InCourseDTO;
 import com.snoreware.mpk.modelIn.InDriverDTO;
 import com.snoreware.mpk.modelIn.InStopDTO;
-import com.snoreware.mpk.request.StopRequest;
-import com.snoreware.mpk.request.BusRequest;
-import com.snoreware.mpk.request.DriverRequest;
-import com.snoreware.mpk.request.TramRequest;
+import com.snoreware.mpk.request.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -207,7 +205,7 @@ public class EditMenuController implements Initializable {
             if(textField1.getText().isEmpty())blad+="nie podano imienia kierowcy lub podana wartosc jest nie poprawna\n";
             if(textField2.getText().isEmpty())blad+="nie podano nazwiska kierowcy lub podana wartosc jest nie poprawna\n";
             if(textField3.getText().isEmpty())blad+="nie podano plci kierowcy lub podana wartosc jest nie poprawna\n";
-            if(isNumeric(textField4.getText()) || textField4.getText().isEmpty())blad+="nie podano placy kierowcy lub podana wartosc jest nie poprawna\n";
+            if(!isNumeric(textField4.getText()) || textField4.getText().isEmpty())blad+="nie podano placy kierowcy lub podana wartosc jest nie poprawna\n";
             if(!blad.isEmpty())showAlert(blad);
             return blad.isEmpty();
         }

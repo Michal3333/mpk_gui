@@ -15,13 +15,18 @@ import java.util.List;
 public class BusRequest {
     public static Long[] getBuses() throws UnirestException {
         Long[] buses;
-        HttpResponse<Long[]> postResponse = Unirest.get("http://localhost:8080/bus/all").asObject(Long[].class);
+        HttpResponse<Long[]> postResponse = Unirest.get("http://localhost:8080/bus/all")
+                .header("accept", "application/json")
+                .header("Content-Type", "application/json")
+                .asObject(Long[].class);
         buses = postResponse.getBody();
         return buses;
     }
     public static Long[] getWorkingBuses() throws UnirestException {
         Long[] buses;
         HttpResponse<Long[]> postResponse = Unirest.get("http://localhost:8080/bus/byStatus")
+                .header("accept", "application/json")
+                .header("Content-Type", "application/json")
                 .queryString("notBroken",true)
                 .asObject(Long[].class);
         buses = postResponse.getBody();
@@ -67,19 +72,28 @@ public class BusRequest {
     }
     public static Long[] getLowFlorBuses() throws UnirestException {
         Long[] buses;
-        HttpResponse<Long[]> postResponse = Unirest.get("http://localhost:8080/bus/lowFloor").asObject(Long[].class);
+        HttpResponse<Long[]> postResponse = Unirest.get("http://localhost:8080/bus/lowFloor")
+                .header("accept", "application/json")
+                .header("Content-Type", "application/json")
+                .asObject(Long[].class);
         buses = postResponse.getBody();
         return buses;
     }
     public static Long[] getArticulatedBuses() throws UnirestException {
         Long[] buses;
-        HttpResponse<Long[]> postResponse = Unirest.get("http://localhost:8080/bus/articulated").asObject(Long[].class);
+        HttpResponse<Long[]> postResponse = Unirest.get("http://localhost:8080/bus/articulated")
+                .header("accept", "application/json")
+                .header("Content-Type", "application/json")
+                .asObject(Long[].class);
         buses = postResponse.getBody();
         return buses;
     }
     public static Long[] getLowFlorandArticulatedBuses() throws UnirestException {
         Long[] buses;
-        HttpResponse<Long[]> postResponse = Unirest.get("http://localhost:8080/bus/lowFloorAndArt").asObject(Long[].class);
+        HttpResponse<Long[]> postResponse = Unirest.get("http://localhost:8080/bus/lowFloorAndArt")
+                .header("accept", "application/json")
+                .header("Content-Type", "application/json")
+                .asObject(Long[].class);
         buses = postResponse.getBody();
         return buses;
 
