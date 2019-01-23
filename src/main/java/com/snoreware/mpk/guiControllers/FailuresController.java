@@ -1,18 +1,13 @@
 package com.snoreware.mpk.guiControllers;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.snoreware.mpk.entities.BusEntity;
-import com.snoreware.mpk.entities.StopEntity;
-import com.snoreware.mpk.entities.TramEntity;
 import com.snoreware.mpk.model.BusDTO;
 import com.snoreware.mpk.model.StopDTO;
 import com.snoreware.mpk.model.TramDTO;
-import com.snoreware.mpk.model.VehicleDTO;
 import com.snoreware.mpk.modelIn.InStopDTO;
-import com.snoreware.mpk.request.StopRequest;
 import com.snoreware.mpk.request.BusRequest;
+import com.snoreware.mpk.request.StopRequest;
 import com.snoreware.mpk.request.TramRequest;
-import com.snoreware.mpk.request.DriverRequest;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,7 +16,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
@@ -41,11 +39,7 @@ public class FailuresController implements Initializable {
     private ObservableList<Long> wypelnienieTram = FXCollections.observableArrayList();
 
     public void showAlert(String info) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText(null);
-        alert.setTitle("Blad wprowadzonych danych");
-        alert.setContentText(info);
-        alert.showAndWait();
+        SalaryUpgradeController.badDataWarning(info);
     }
 
     public void zglos(ActionEvent actionEvent) throws UnirestException {
@@ -55,24 +49,21 @@ public class FailuresController implements Initializable {
                 InStopDTO stop = stopsL.getSelectionModel().getSelectedItem();
                 StopRequest.stopFailure(stop);
                 updateStopList();
-            }
-            else  showAlert("nie zaznaczono przystanku do zmiany");
+            } else showAlert("Nie zaznaczono przystanku do zmiany");
         }
         else if(tab == 1){
             if(busesL.getSelectionModel().getSelectedItem() != null){
                 Long id = busesL.getSelectionModel().getSelectedItem();
                 BusRequest.busFailure(id);
                 updateBusList();
-            }
-            else  showAlert("nie zaznaczono autobusu do zmiany");
+            } else showAlert("Nie zaznaczono autobusu do zmiany");
         }
         else if(tab == 2){
             if(tramsL.getSelectionModel().getSelectedItem() != null){
                 Long id = tramsL.getSelectionModel().getSelectedItem();
                 TramRequest.tramFailure(id);
                 updateTramList();
-            }
-            else  showAlert("nie zaznaczono tramwaju do zmiany");
+            } else showAlert("Nie zaznaczono tramwaju do zmiany");
         }
         button.setVisible(false);
         label.setVisible(false);
@@ -85,12 +76,12 @@ public class FailuresController implements Initializable {
             Long id = tramsL.getSelectionModel().getSelectedItem();
             TramDTO tram = TramRequest.getTram(id);
             if(tram.getBreakdown()){
-                label.setText("awaria");
-                button.setText("napraw");
+                label.setText("Awaria");
+                button.setText("Napraw");
             }
             else{
-                label.setText("dziala");
-                button.setText("zglos awarie");
+                label.setText("Działa");
+                button.setText("Zgłoś awarię");
             }
         }
 
@@ -102,13 +93,12 @@ public class FailuresController implements Initializable {
             label.setVisible(true);
             Long id = busesL.getSelectionModel().getSelectedItem();
             BusDTO bus = BusRequest.getBus(id);
-            if(bus.getBreakdown()){
-                label.setText("awaria bus");
-                button.setText("napraw");
-            }
-            else{
-                label.setText("dziala");
-                button.setText("zglos awarie");
+            if (!bus.getBreakdown()) {
+                label.setText("Działa");
+                button.setText("Zgłoś awarię");
+            } else {
+                label.setText("Awaria");
+                button.setText("Napraw");
             }
         }
     }
@@ -120,12 +110,12 @@ public class FailuresController implements Initializable {
             InStopDTO stopid = stopsL.getSelectionModel().getSelectedItem();
             StopDTO stop = StopRequest.getStop(stopid);
             if(stop.getStopBreakdown()){
-                label.setText("awaria");
-                button.setText("napraw");
+                label.setText("Awaria");
+                button.setText("Napraw");
             }
             else{
-                label.setText("dziala");
-                button.setText("zglos awarie");
+                label.setText("Działa");
+                button.setText("Zgłoś awarię");
             }
         }
     }

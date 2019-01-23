@@ -1,12 +1,9 @@
 package com.snoreware.mpk.guiControllers;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.snoreware.mpk.entities.DriverEntity;
 import com.snoreware.mpk.model.DriverDTO;
 import com.snoreware.mpk.modelIn.InDriverDTO;
-import com.snoreware.mpk.request.StopRequest;
 import com.snoreware.mpk.request.DriverRequest;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -35,28 +32,28 @@ public class SalaryUpgradeController implements Initializable {
     public TextField upgrade;
     private ObservableList<InDriverDTO> wypelnienieDriver = FXCollections.observableArrayList();
 
-    public void showAlert(String info) {
+    private void showAlert(String info) {
+        badDataWarning(info);
+    }
+
+    static void badDataWarning(String info) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
-        alert.setTitle("Blad wprowadzonych danych");
+        alert.setTitle("Błąd wprowadzonych danych");
         alert.setContentText(info);
         alert.showAndWait();
     }
 
-    public boolean isNumeric(String str)
-    {
-        try
-        {
+    private boolean isNumeric(String str) {
+        try {
             double d = Double.parseDouble(str);
-        }
-        catch(NumberFormatException nfe)
-        {
+        } catch (NumberFormatException nfe) {
             return false;
         }
         return true;
     }
 
-    public void updateDriverList(){
+    private void updateDriverList() {
         wypelnienieDriver.clear();
         updateDr(wypelnienieDriver, driverList);
     }
@@ -72,13 +69,13 @@ public class SalaryUpgradeController implements Initializable {
     }
 
     public void zatwierdz(ActionEvent actionEvent) throws UnirestException {
-        if(driverList.getSelectionModel().getSelectedItem() != null){
-            if(isNumeric(upgrade.getText()) && !upgrade.getText().isEmpty()){
+        if (driverList.getSelectionModel().getSelectedItem() != null) {
+            if (isNumeric(upgrade.getText()) && !upgrade.getText().isEmpty()) {
                 InDriverDTO driverid = driverList.getSelectionModel().getSelectedItem();
                 DriverDTO driver = DriverRequest.getDriver(driverid.getDriverId());
                 DriverDTO driverDTO = new DriverDTO();
                 driverDTO.setDriverId(driver.getDriverId());
-                if(driver.getSalary() +Float.parseFloat(upgrade.getText()) > 0 ){
+                if (driver.getSalary() + Float.parseFloat(upgrade.getText()) > 0) {
                     driverDTO.setSalary(driver.getSalary() + Float.parseFloat(upgrade.getText()));
                     DriverRequest.updateDriver(driverDTO);
                     updateDriverList();
@@ -87,16 +84,14 @@ public class SalaryUpgradeController implements Initializable {
                     sex.setVisible(false);
                     salary.setVisible(false);
                     seniority.setVisible(false);
-                }
-                else showAlert("kierowca nie moze miec ujemnego wynagrodzenia");
-            }
-            else showAlert("nie wprowadzono wartosci pola zmiana lub wprowadzona wartpsc jest niepoprawna");
+                } else showAlert("Kierowca nie może miec ujemnego wynagrodzenia");
+            } else showAlert("Nie wprowadzono wartości pola zmiana lub wprowadzona wartość jest niepoprawna");
         }
 
     }
 
     public void selectDriver(MouseEvent mouseEvent) throws UnirestException {
-        if(driverList.getSelectionModel().getSelectedItem() != null){
+        if (driverList.getSelectionModel().getSelectedItem() != null) {
             name.setVisible(true);
             surname.setVisible(true);
             sex.setVisible(true);
@@ -104,10 +99,10 @@ public class SalaryUpgradeController implements Initializable {
             seniority.setVisible(true);
             InDriverDTO driverid = driverList.getSelectionModel().getSelectedItem();
             DriverDTO driver = DriverRequest.getDriver(driverid.getDriverId());
-            name.setText("Imie: "+ driver.getName());
-            surname.setText("Nazwisko :"+ driver.getSurname());
-            sex.setText("Plec: "+ driver.getSex());
-            salary.setText("Placa: "+ driver.getSalary().toString());
+            name.setText("Imię: " + driver.getName());
+            surname.setText("Nazwisko :" + driver.getSurname());
+            sex.setText("Płeć: " + driver.getSex());
+            salary.setText("Płaca: " + driver.getSalary().toString());
         }
     }
 
@@ -119,8 +114,7 @@ public class SalaryUpgradeController implements Initializable {
     public void goHome(ActionEvent actionEvent) {
         try {
             MenuController.stage.setScene(createMenuScne());
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

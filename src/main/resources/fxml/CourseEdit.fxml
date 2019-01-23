@@ -1,37 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
-
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.snoreware.mpk.guiControllers.CourseEditController">
    <children>
        <TextField fx:id="stazUstawianie" layoutX="448.0" layoutY="314.0" />
        <TextField fx:id="wagonUstawanie" layoutX="448.0" layoutY="368.0" />
-       <Label fx:id="driverLAbel" layoutX="414.0" layoutY="142.0" text="Driver" />
-       <Label fx:id="routeLabel" layoutX="414.0" layoutY="273.0" text="Route" />
-       <Label fx:id="vehicleLAble" layoutX="414.0" layoutY="209.0" text="Vehicle" />
+       <Label fx:id="driverLAbel" layoutX="414.0" layoutY="142.0" text="Kierowca"/>
+       <Label fx:id="routeLabel" layoutX="414.0" layoutY="273.0" text="Trasa"/>
+       <Label fx:id="vehicleLAble" layoutX="414.0" layoutY="209.0" text="Pojazd"/>
        <ComboBox fx:id="driverCombo" layoutX="515.0" layoutY="138.0" onMouseClicked="#ustawMinstaz" prefWidth="150.0" />
        <ComboBox fx:id="vehicleCombo" layoutX="515.0" layoutY="205.0" onMouseClicked="#ustawMinWagon" prefWidth="150.0" />
        <ComboBox fx:id="routeCombo" layoutX="515.0" layoutY="269.0" prefWidth="150.0" />
 
-       <CheckBox fx:id="articulated" layoutX="456.0" layoutY="372.0" mnemonicParsing="false" onAction="#zmienArticulated" text="Articulated" />
-       <CheckBox fx:id="lowFlor" layoutX="456.0" layoutY="411.0" mnemonicParsing="false" onAction="#zmienLowFloor" text="LowFLor" />
+       <CheckBox fx:id="articulated" layoutX="456.0" layoutY="372.0" mnemonicParsing="false"
+                 onAction="#zmienArticulated" text="Przegubowy"/>
+       <CheckBox fx:id="lowFlor" layoutX="456.0" layoutY="411.0" mnemonicParsing="false" onAction="#zmienLowFloor"
+                 text="Niskopodłogowy"/>
 
-       <Button fx:id="edit" layoutX="524.0" layoutY="64.0" mnemonicParsing="false" onAction="#edit" text="Edit Mode" />
-       <Button fx:id="add" layoutX="437.0" layoutY="482.0" mnemonicParsing="false" onAction="#add" text="Add" />
-       <Button fx:id="delete" layoutX="515.0" layoutY="482.0" mnemonicParsing="false" onAction="#delete" text="Delete" />
-       <Button fx:id="editCourse" layoutX="595.0" layoutY="482.0" mnemonicParsing="false" onAction="#editCourse" text="Edit" />
+       <Button fx:id="edit" layoutX="524.0" layoutY="64.0" mnemonicParsing="false" onAction="#edit" text="Tryb edycji"/>
+       <Button fx:id="add" layoutX="409.0" layoutY="466.0" mnemonicParsing="false" onAction="#add" prefHeight="42.0"
+               prefWidth="84.0" text="Dodaj"/>
+       <Button fx:id="delete" layoutX="503.0" layoutY="466.0" mnemonicParsing="false" onAction="#delete"
+               prefHeight="42.0" prefWidth="84.0" text="Usuń"/>
+       <Button fx:id="editCourse" layoutX="598.0" layoutY="466.0" mnemonicParsing="false" onAction="#editCourse"
+               prefHeight="42.0" prefWidth="84.0" text="Edytuj"/>
        <Button layoutX="703.0" layoutY="537.0" mnemonicParsing="false" onAction="#goHome" text="Home" />
-      <TabPane fx:id="tabs" layoutX="21.0" layoutY="24.0" prefHeight="549.0" prefWidth="267.0" tabClosingPolicy="UNAVAILABLE" >
+       <TabPane fx:id="tabs" layoutX="21.0" layoutY="24.0" prefHeight="549.0" prefWidth="297.0"
+                tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab onSelectionChanged = "#wybierzBus" text="Kursy Autobuswe" >
+            <Tab onSelectionChanged="#wybierzBus" text="Kursy Autobuswe">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="228.0" prefWidth="229.0">
                      <children>
@@ -39,11 +37,12 @@
                      </children></AnchorPane>
             </content>
           </Tab>
-          <Tab onSelectionChanged = "#wybierzTram" text="Kursy Tramwajowe" >
+            <Tab onSelectionChanged="#wybierzTram" text="Kursy Tramwajowe">
             <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="228.0" prefWidth="229.0">
                     <children>
-                        <ListView fx:id="TramList" layoutY="4.0" onMouseClicked="#selectTram" prefHeight="513.0" prefWidth="267.0" />
+                        <ListView fx:id="TramList" layoutY="4.0" onMouseClicked="#selectTram" prefHeight="513.0"
+                                  prefWidth="297.0"/>
                     </children></AnchorPane>
             </content>
           </Tab>

@@ -33,9 +33,9 @@ public class EditRouteController implements Initializable {
     private ObservableList<Long> wypelnienieRoute = FXCollections.observableArrayList();
     public Button up;
     public Button down;
-    public ComboBox <InStopDTO> combo;
+    public ComboBox<InStopDTO> combo;
     public TextField textField;
-    public Boolean isInEditMode;
+    private Boolean isInEditMode;
 
     public void clear(ActionEvent actionEvent) {
         textField.clear();
@@ -43,22 +43,22 @@ public class EditRouteController implements Initializable {
         ListaSops.setItems(wypelnienieStop);
     }
 
-    public void showAlert(String info) {
+    private void showAlert(String info) {
+        badDataWarning(info, "Błąd wprowadzonych danych");
+    }
+
+    static void badDataWarning(String info, String s) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
-        alert.setTitle("Blad wprowadzonych danych");
+        alert.setTitle(s);
         alert.setContentText(info);
         alert.showAndWait();
     }
 
-    public boolean isNumeric(String str)
-    {
-        try
-        {
+    private boolean isNumeric(String str) {
+        try {
             double d = Double.parseDouble(str);
-        }
-        catch(NumberFormatException nfe)
-        {
+        } catch (NumberFormatException nfe) {
             return false;
         }
         return true;
@@ -66,38 +66,35 @@ public class EditRouteController implements Initializable {
 
     public void addRoute(ActionEvent actionEvent) throws UnirestException {
         boolean test = true;
-        if(textField.getText() != "" && isNumeric(textField.getText())){
+        if (!textField.getText().equals("") && isNumeric(textField.getText())) {
             Long[] istniejace = RouteRequest.getRoutes();
-               Long dodawany = Long.parseLong(textField.getText());
-            for(int i = 0; i < istniejace.length; i++){
-                if(istniejace[i] == dodawany) test = false;
+            Long dodawany = Long.parseLong(textField.getText());
+            for (Long anIstniejace : istniejace) {
+                if (anIstniejace.equals(dodawany)) test = false;
             }
-            if(test) {
+            if (test) {
                 UUID[] list = new UUID[wypelnienieStop.size()];
                 for (int i = 0; i < wypelnienieStop.size(); i++) {
                     list[i] = wypelnienieStop.get(i).getStopId();
                 }
-                if(list.length>0){
+                if (list.length > 0) {
                     RouteRequest.addRoute(dodawany);
                     RouteRequest.addStopsToRoute(list, dodawany);
                     wypelnienieRoute.setAll(RouteRequest.getRoutes());
                     ListaTras.setItems(wypelnienieRoute);
-                }
-                else {
-                    showAlert("trasa musi miec dzialajace przystanki");
+                } else {
+                    showAlert("Trasa musi mieć działające przystanki");
 
                 }
 
+            } else {
+                showAlert("Jest już taka trasa");
             }
-            else{
-                showAlert("jest juz taka trasa");
-            }
-        }
-        else  showAlert("nie podano numeru trasy lub podany numer jest nie prawidlowy");
+        } else showAlert("Nie podano numeru trasy lub podany numer jest nieprawidlowy");
     }
 
     public void editMode(ActionEvent actionEvent) throws UnirestException {//TODO uwaga na nazwe
-        if(!isInEditMode){
+        if (!isInEditMode) {
             textField.setVisible(true);
             update.setVisible(true);
             addStop.setVisible(true);
@@ -111,10 +108,9 @@ public class EditRouteController implements Initializable {
 //            ListaSops.setItems(wypelnienieStop);
             wypelnienieStopAll.setAll(StopRequest.getWorkingStops());
             combo.setItems(wypelnienieStopAll);
-            editmode.setText("Quit Edit mode");
+            editmode.setText("Wyjdź z trybu edycji");
             isInEditMode = !isInEditMode;
-        }
-        else {
+        } else {
             textField.setVisible(false);
             update.setVisible(false);
             addStop.setVisible(false);
@@ -126,39 +122,39 @@ public class EditRouteController implements Initializable {
             delete.setVisible(false);
             wypelnienieStop.clear();
             isInEditMode = !isInEditMode;
-            editmode.setText("Edit/Add Mode");
+            editmode.setText("Edytuj/Dodaj");
         }
 
     }
 
     public void up(ActionEvent actionEvent) {
-        if(ListaSops.getSelectionModel().getSelectedItem() != null && wypelnienieStop.size() > 1){
+        if (ListaSops.getSelectionModel().getSelectedItem() != null && wypelnienieStop.size() > 1) {
             int indeks = ListaSops.getSelectionModel().getSelectedIndex();
-            if(indeks > 0){
+            if (indeks > 0) {
                 InStopDTO stopToCHange = wypelnienieStop.get(indeks);
-                wypelnienieStop.set(indeks, wypelnienieStop.get(indeks-1));
-                wypelnienieStop.set(indeks-1, stopToCHange);
+                wypelnienieStop.set(indeks, wypelnienieStop.get(indeks - 1));
+                wypelnienieStop.set(indeks - 1, stopToCHange);
                 ListaSops.setItems(wypelnienieStop);
-                ListaSops.getSelectionModel().select(indeks-1);
+                ListaSops.getSelectionModel().select(indeks - 1);
             }
         }
     }
 
     public void down(ActionEvent actionEvent) {
-        if(ListaSops.getSelectionModel().getSelectedItem() != null && wypelnienieStop.size() > 1){
+        if (ListaSops.getSelectionModel().getSelectedItem() != null && wypelnienieStop.size() > 1) {
             int indeks = ListaSops.getSelectionModel().getSelectedIndex();
-            if(indeks < wypelnienieStop.size() - 1){
+            if (indeks < wypelnienieStop.size() - 1) {
                 InStopDTO stopToCHange = wypelnienieStop.get(indeks);
                 wypelnienieStop.set(indeks, wypelnienieStop.get(indeks + 1));
                 wypelnienieStop.set(indeks + 1, stopToCHange);
                 ListaSops.setItems(wypelnienieStop);
-                ListaSops.getSelectionModel().select(indeks+1);
+                ListaSops.getSelectionModel().select(indeks + 1);
             }
         }
     }
 
     public void selectTrasa(MouseEvent mouseEvent) throws UnirestException {
-        if(ListaTras.getSelectionModel().getSelectedItem() != null){
+        if (ListaTras.getSelectionModel().getSelectedItem() != null) {
             Long id = ListaTras.getSelectionModel().getSelectedItem();
             wypelnienieStop.setAll(RouteRequest.getStopsOnRoute(id));
             ListaSops.setItems(wypelnienieStop);
@@ -166,7 +162,6 @@ public class EditRouteController implements Initializable {
     }
 
     public void selectStop(MouseEvent mouseEvent) {
-
 
 
     }
@@ -202,7 +197,7 @@ public class EditRouteController implements Initializable {
 //    }
 
     public void delete(ActionEvent actionEvent) throws UnirestException {
-        if(ListaTras.getSelectionModel().getSelectedItem() != null){
+        if (ListaTras.getSelectionModel().getSelectedItem() != null) {
             RouteRequest.removeRoute(ListaTras.getSelectionModel().getSelectedItem());
             textField.clear();
             wypelnienieStop.clear();
@@ -213,9 +208,8 @@ public class EditRouteController implements Initializable {
             } catch (UnirestException e) {
                 e.printStackTrace();
             }
-        }
-        else{
-            showAlert("nie zaznaczono trasy do usuniecia");
+        } else {
+            showAlert("Nie zaznaczono trasy do usunięcia");
         }
 
     }
@@ -223,8 +217,7 @@ public class EditRouteController implements Initializable {
     public void goHome(ActionEvent actionEvent) {
         try {
             MenuController.stage.setScene(createMenuScne());
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -238,15 +231,15 @@ public class EditRouteController implements Initializable {
     }
 
     public void addStop(ActionEvent actionEvent) {
-        if(combo.getSelectionModel().getSelectedItem() != null){
+        if (combo.getSelectionModel().getSelectedItem() != null) {
             wypelnienieStop.add(combo.getSelectionModel().getSelectedItem());
             ListaSops.setItems(wypelnienieStop);
         }
     }
 
     public void editRoute(ActionEvent actionEvent) throws UnirestException {
-        if(ListaTras.getSelectionModel().getSelectedItem() != null){
-            if(wypelnienieStop.size()>0) {
+        if (ListaTras.getSelectionModel().getSelectedItem() != null) {
+            if (wypelnienieStop.size() > 0) {
                 UUID[] list = new UUID[wypelnienieStop.size()];
                 for (int i = 0; i < wypelnienieStop.size(); i++) {
                     list[i] = wypelnienieStop.get(i).getStopId();
@@ -255,9 +248,8 @@ public class EditRouteController implements Initializable {
                 RouteRequest.addStopsToRoute(list, dodawany);
                 wypelnienieRoute.setAll(RouteRequest.getRoutes());
                 ListaTras.setItems(wypelnienieRoute);
-            }
-            else {
-                showAlert("lista przystankow jest pusta");
+            } else {
+                showAlert("Lista przystanków jest pusta");
             }
         }
     }

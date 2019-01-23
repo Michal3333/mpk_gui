@@ -25,18 +25,18 @@ public class CourseEditController implements Initializable {
     public Label driverLAbel;
     public Label routeLabel;
     public Label vehicleLAble;
-    public ComboBox <Long> routeCombo;
-    public ComboBox <InDriverDTO>driverCombo;
-    public ComboBox <Long>vehicleCombo;
+    public ComboBox<Long> routeCombo;
+    public ComboBox<InDriverDTO> driverCombo;
+    public ComboBox<Long> vehicleCombo;
     public CheckBox articulated;
     public CheckBox lowFlor;
     public Button edit;
     public Button add;
     public Button delete;
-    public ListView <InCourseDTO> BusList;
+    public ListView<InCourseDTO> BusList;
     public Button editCourse;
     public TextField stazUstawianie;
-    public ListView <InCourseDTO> TramList;
+    public ListView<InCourseDTO> TramList;
     public TabPane tabs;
     public TextField wagonUstawanie;
     private ObservableList<InCourseDTO> wypelnieniebus = FXCollections.observableArrayList();
@@ -44,100 +44,98 @@ public class CourseEditController implements Initializable {
     private ObservableList<Long> wypelnienieRoute = FXCollections.observableArrayList();
     private ObservableList<Long> wypelnienievehicle = FXCollections.observableArrayList();
     private int editMode = 0;
-    public boolean isNumeric(String str)
-    {
-        try
-        {
+
+    private boolean isNumeric(String str) {
+        try {
             double d = Double.parseDouble(str);
-        }
-        catch(NumberFormatException nfe)
-        {
+        } catch (NumberFormatException nfe) {
             return false;
         }
         return true;
     }
-    public void showAlert(String info) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText(null);
-        alert.setTitle("Blad wprowadzonych danych");
-        alert.setContentText(info);
-        alert.showAndWait();
+
+    private void showAlert(String info) {
+        EditRouteController.badDataWarning(info, "Błąd wprowadzonych danych");
     }
 
 
-
-    public void updateCourseTab() throws UnirestException {
+    private void updateCourseTab() throws UnirestException {
         wypelnieniebus.setAll(CourseBusRequest.getBusCourses());
         BusList.setItems(wypelnieniebus);
     }
+
     public void updateCourseTabTram() throws UnirestException {
         wypelnieniebus.setAll(CourseTramRequest.getTramCourses());
         TramList.setItems(wypelnieniebus);
     }
-    public  void updateDriverCombo() throws UnirestException {
+
+    private void updateDriverCombo() throws UnirestException {
         wypelnienieDriver.setAll(DriverRequest.getAviableDrivers());
         driverCombo.setItems(wypelnienieDriver);
     }
-    public void updateRouteCombo() throws UnirestException {
+
+    private void updateRouteCombo() throws UnirestException {
         wypelnienieRoute.setAll(RouteRequest.getRoutes());
         routeCombo.setItems(wypelnienieRoute);
     }
-    public void updateVehicleCombo() throws UnirestException {
+
+    private void updateVehicleCombo() throws UnirestException {
         wypelnienievehicle.setAll(BusRequest.getWorkingBuses());
         vehicleCombo.setItems(wypelnienievehicle);
     }
-    public void updateVehicleComboLowFloor() throws UnirestException {
+
+    private void updateVehicleComboLowFloor() throws UnirestException {
         wypelnienievehicle.setAll(BusRequest.getLowFlorBuses());
         vehicleCombo.setItems(wypelnienievehicle);
     }
-    public void updateVehicleComboArticulated() throws UnirestException {
+
+    private void updateVehicleComboArticulated() throws UnirestException {
         wypelnienievehicle.setAll(BusRequest.getArticulatedBuses());
         vehicleCombo.setItems(wypelnienievehicle);
     }
-    public void updateVehicleComboArticulatedAndLow() throws UnirestException {
+
+    private void updateVehicleComboArticulatedAndLow() throws UnirestException {
         wypelnienievehicle.setAll(BusRequest.getLowFlorandArticulatedBuses());
         vehicleCombo.setItems(wypelnienievehicle);
     }
-    public void updateVehicleComboTram() throws UnirestException {
+
+    private void updateVehicleComboTram() throws UnirestException {
         wypelnienievehicle.setAll(TramRequest.getWorkingTrams());
         vehicleCombo.setItems(wypelnienievehicle);
     }
-    public void updateVehicleComboTramLow() throws UnirestException {
+
+    private void updateVehicleComboTramLow() throws UnirestException {
         wypelnienievehicle.setAll(TramRequest.getLowFloorTrams());
         vehicleCombo.setItems(wypelnienievehicle);
     }
 
 
-
     public void delete(ActionEvent actionEvent) throws UnirestException {
-        if(tabs.getSelectionModel().getSelectedIndex() == 0){
-            if(BusList.getSelectionModel().getSelectedItem() != null){
+        if (tabs.getSelectionModel().getSelectedIndex() == 0) {
+            if (BusList.getSelectionModel().getSelectedItem() != null) {
                 CourseBusRequest.deleteBusCourse(BusList.getSelectionModel().getSelectedItem());
                 updateCourseTab();
-            }
-            else showAlert("nie zaznaczono kursu do usniecia");
-        }
-        else if(tabs.getSelectionModel().getSelectedIndex() == 1){
-            if(TramList.getSelectionModel().getSelectedItem() != null){
+            } else showAlert("Nie zaznaczono kursu do usunięcia");
+        } else if (tabs.getSelectionModel().getSelectedIndex() == 1) {
+            if (TramList.getSelectionModel().getSelectedItem() != null) {
                 CourseTramRequest.deleteTramCourse(TramList.getSelectionModel().getSelectedItem());
                 updateCourseTabTram();
-            }
-            else showAlert("nie zaznaczono kursu do usniecia");
+            } else showAlert("Nie zaznaczono kursu do usunięcia");
         }
     }
 
-    public boolean checkContainers(){
-        String blad ="";
-        if(routeCombo.getSelectionModel().getSelectedItem() == null) blad+="nie wybrano trasy\n";
-        if(driverCombo.getSelectionModel().getSelectedItem() == null)blad+="nie wybrano kierowcy\n";
-        if(vehicleCombo.getSelectionModel().getSelectedItem() == null)blad+="nie wybrano pojazdu\n";
-        if(!blad.isEmpty())showAlert(blad);
+    private boolean checkContainers() {
+        String blad = "";
+        if (routeCombo.getSelectionModel().getSelectedItem() == null) blad += "Nie wybrano trasy\n";
+        if (driverCombo.getSelectionModel().getSelectedItem() == null) blad += "Nie wybrano kierowcy\n";
+        if (vehicleCombo.getSelectionModel().getSelectedItem() == null) blad += "Nie wybrano pojazdu\n";
+        if (!blad.isEmpty()) showAlert(blad);
         return blad.isEmpty();
     }
 
     public void add(ActionEvent actionEvent) throws UnirestException {
-        if(tabs.getSelectionModel().getSelectedIndex() == 0){
-            if(checkContainers()){
+        if (tabs.getSelectionModel().getSelectedIndex() == 0) {
+            if (checkContainers()) {
                 CourseDTO courseDTO = new CourseDTO();
                 courseDTO.setArticulatedNeeded(articulated.isSelected());
                 courseDTO.setLowFloorNeeded(lowFlor.isSelected());
@@ -150,9 +148,8 @@ public class CourseEditController implements Initializable {
 
                 updateCourseTab();
             }
-        }
-        else if(tabs.getSelectionModel().getSelectedIndex() == 1){
-            if(checkContainers()){
+        } else if (tabs.getSelectionModel().getSelectedIndex() == 1) {
+            if (checkContainers()) {
                 CourseDTO courseDTO = new CourseDTO();
                 courseDTO.setManyWagonsNeeded(true);
                 courseDTO.setLowFloorNeeded(lowFlor.isSelected());
@@ -169,52 +166,50 @@ public class CourseEditController implements Initializable {
         }
 
     }
+
     public void editCourse(ActionEvent actionEvent) throws UnirestException {
-        if(tabs.getSelectionModel().getSelectedIndex() == 0){
-            if(BusList.getSelectionModel().getSelectedItem() != null){
-                if(checkContainers()){
+        if (tabs.getSelectionModel().getSelectedIndex() == 0) {
+            if (BusList.getSelectionModel().getSelectedItem() != null) {
+                if (checkContainers()) {
                     InCourseDTO course = BusList.getSelectionModel().getSelectedItem();
-                    if(driverCombo.getSelectionModel().getSelectedItem().getDriverId() != course.getDriverId()){
+                    if (driverCombo.getSelectionModel().getSelectedItem().getDriverId() != course.getDriverId()) {
                         DriverDTO driver = DriverRequest.getDriver(driverCombo.getSelectionModel().getSelectedItem().getDriverId());
                         CourseBusRequest.updateDriver(driver, course.getCourseId());
                     }
-                    if(routeCombo.getSelectionModel().getSelectedItem() != course.getRouteNumber()){
-                        CourseBusRequest.updateRoute(routeCombo.getSelectionModel().getSelectedItem(),course.getCourseId());
+                    if (routeCombo.getSelectionModel().getSelectedItem() != course.getRouteNumber()) {
+                        CourseBusRequest.updateRoute(routeCombo.getSelectionModel().getSelectedItem(), course.getCourseId());
                     }
-                    if(vehicleCombo.getSelectionModel().getSelectedItem() != course.getVehicleNumber()){
-                        CourseBusRequest.updateBus(vehicleCombo.getSelectionModel().getSelectedItem(),course.getCourseId());
+                    if (vehicleCombo.getSelectionModel().getSelectedItem() != course.getVehicleNumber()) {
+                        CourseBusRequest.updateBus(vehicleCombo.getSelectionModel().getSelectedItem(), course.getCourseId());
                     }
                     updateCourseTab();
                 }
-            }
-            else showAlert("nie wybrano kursu do edytcji");
-        }
-        else if(tabs.getSelectionModel().getSelectedIndex() == 1){
-            if(TramList.getSelectionModel().getSelectedItem() != null){
-                if(checkContainers()){
+            } else showAlert("nie wybrano kursu do edytcji");
+        } else if (tabs.getSelectionModel().getSelectedIndex() == 1) {
+            if (TramList.getSelectionModel().getSelectedItem() != null) {
+                if (checkContainers()) {
                     InCourseDTO course = TramList.getSelectionModel().getSelectedItem();
-                    if(driverCombo.getSelectionModel().getSelectedItem().getDriverId() != course.getDriverId()){
+                    if (driverCombo.getSelectionModel().getSelectedItem().getDriverId() != course.getDriverId()) {
                         DriverDTO driver = DriverRequest.getDriver(driverCombo.getSelectionModel().getSelectedItem().getDriverId());
                         CourseTramRequest.updateDriver(driver, course.getCourseId());
                     }
-                    if(routeCombo.getSelectionModel().getSelectedItem() != course.getRouteNumber()){
-                        CourseTramRequest.updateRoute(routeCombo.getSelectionModel().getSelectedItem(),course.getCourseId());
+                    if (routeCombo.getSelectionModel().getSelectedItem() != course.getRouteNumber()) {
+                        CourseTramRequest.updateRoute(routeCombo.getSelectionModel().getSelectedItem(), course.getCourseId());
                     }
-                    if(vehicleCombo.getSelectionModel().getSelectedItem() != course.getVehicleNumber()){
-                        CourseTramRequest.updateTram(vehicleCombo.getSelectionModel().getSelectedItem(),course.getCourseId());
+                    if (vehicleCombo.getSelectionModel().getSelectedItem() != course.getVehicleNumber()) {
+                        CourseTramRequest.updateTram(vehicleCombo.getSelectionModel().getSelectedItem(), course.getCourseId());
                     }
                     updateCourseTabTram();
                 }
-            }
-            else showAlert("nie wybrano kursu do edytcji");
+            } else showAlert("nie wybrano kursu do edytcji");
         }
 
 
     }
 
     public void edit(ActionEvent actionEvent) throws UnirestException {
-        if(tabs.getSelectionModel().getSelectedIndex() == 0){
-            if(editMode == 0){
+        if (tabs.getSelectionModel().getSelectedIndex() == 0) {
+            if (editMode == 0) {
                 updateDriverCombo();
                 updateRouteCombo();
                 updateVehicleCombo();
@@ -231,8 +226,7 @@ public class CourseEditController implements Initializable {
                 vehicleLAble.setText("pojazd : ");
                 wagonUstawanie.setVisible(false);
                 articulated.setVisible(true);
-            }
-            else{
+            } else {
                 editCourse.setVisible(false);
                 driverLAbel.setText("");
                 routeLabel.setText("");
@@ -247,9 +241,8 @@ public class CourseEditController implements Initializable {
 
                 editMode = 0;
             }
-        }
-        else if(tabs.getSelectionModel().getSelectedIndex() == 1){
-            if(editMode == 0){
+        } else if (tabs.getSelectionModel().getSelectedIndex() == 1) {
+            if (editMode == 0) {
                 editMode = 1;
                 updateDriverCombo();
                 updateRouteCombo();
@@ -267,9 +260,8 @@ public class CourseEditController implements Initializable {
                 vehicleLAble.setText("pojazd : ");
                 wagonUstawanie.setVisible(true);
                 articulated.setVisible(false);
-            }
-            else {
-                editMode =0;
+            } else {
+                editMode = 0;
                 editCourse.setVisible(false);
                 driverLAbel.setText("");
                 routeLabel.setText("");
@@ -289,8 +281,8 @@ public class CourseEditController implements Initializable {
     }
 
     public void selectBus(MouseEvent mouseEvent) throws UnirestException {
-        if(BusList.getSelectionModel().getSelectedItem() != null){
-            if(editMode == 1){
+        if (BusList.getSelectionModel().getSelectedItem() != null) {
+            if (editMode == 1) {
                 InCourseDTO selected = BusList.getSelectionModel().getSelectedItem();
                 vehicleCombo.getSelectionModel().select(selected.getVehicleNumber());
                 DriverDTO driver = DriverRequest.getDriver(selected.getDriverId());
@@ -302,15 +294,14 @@ public class CourseEditController implements Initializable {
                 routeCombo.getSelectionModel().select(selected.getRouteNumber());
                 lowFlor.setSelected(selected.getLowFloorNeeded());
                 articulated.setSelected(selected.getArticulated());
-            }
-            else{
+            } else {
                 InCourseDTO selected = BusList.getSelectionModel().getSelectedItem();
                 DriverDTO driver = DriverRequest.getDriver(selected.getDriverId());
                 InDriverDTO in = new InDriverDTO();
                 in.setDriverId(driver.getDriverId());
                 in.setName(driver.getName());
                 in.setSurname(driver.getSurname());
-                driverLAbel.setText("Kierowca : " +in.toString());
+                driverLAbel.setText("Kierowca : " + in.toString());
                 vehicleLAble.setText("Pojazd : " + selected.getVehicleNumber().toString());
                 routeLabel.setText("Trasa : " + selected.getRouteNumber().toString());
             }
@@ -320,8 +311,7 @@ public class CourseEditController implements Initializable {
     public void goHome(ActionEvent actionEvent) {
         try {
             MenuController.stage.setScene(createMenuScne());
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -354,22 +344,20 @@ public class CourseEditController implements Initializable {
         }
 
     }
-    public void zmienArtTemp() throws UnirestException {
-        if(tabs.getSelectionModel().getSelectedIndex() == 0){
+
+    private void zmienArtTemp() throws UnirestException {
+        if (tabs.getSelectionModel().getSelectedIndex() == 0) {
             vehicleCombo.getSelectionModel().clearSelection();
-            if(articulated.isSelected()){
-                if(lowFlor.isSelected()){
+            if (articulated.isSelected()) {
+                if (lowFlor.isSelected()) {
                     updateVehicleComboArticulatedAndLow();
-                }
-                else {
+                } else {
                     updateVehicleComboArticulated();
                 }
-            }
-            else{
-                if(lowFlor.isSelected()){
+            } else {
+                if (lowFlor.isSelected()) {
                     updateVehicleComboLowFloor();
-                }
-                else {
+                } else {
                     updateVehicleCombo();
                 }
             }
@@ -381,42 +369,35 @@ public class CourseEditController implements Initializable {
         zmienArtTemp();
     }
 
-    public void zmienLowFloorTemp() throws UnirestException {
-        if(tabs.getSelectionModel().getSelectedIndex() == 0){
+    private void zmienLowFloorTemp() throws UnirestException {
+        if (tabs.getSelectionModel().getSelectedIndex() == 0) {
             vehicleCombo.getSelectionModel().clearSelection();
-            if(lowFlor.isSelected()){
-                if(articulated.isSelected()){
+            if (lowFlor.isSelected()) {
+                if (articulated.isSelected()) {
                     updateVehicleComboArticulatedAndLow();
-                }
-                else {
+                } else {
                     updateVehicleComboLowFloor();
                 }
-            }
-            else{
-                if(articulated.isSelected()){
+            } else {
+                if (articulated.isSelected()) {
                     updateVehicleComboLowFloor();
-                }
-                else {
+                } else {
                     updateVehicleCombo();
                 }
             }
-        }
-        else if(tabs.getSelectionModel().getSelectedIndex() == 1){
-            if(lowFlor.isSelected()){
-                if(!wagonUstawanie.getText().isEmpty() && isNumeric(wagonUstawanie.getText())){
+        } else if (tabs.getSelectionModel().getSelectedIndex() == 1) {
+            if (lowFlor.isSelected()) {
+                if (!wagonUstawanie.getText().isEmpty() && isNumeric(wagonUstawanie.getText())) {
                     wypelnienievehicle.setAll(TramRequest.getNumberLowFloorTrams(Integer.parseInt(wagonUstawanie.getText())));
                     vehicleCombo.setItems(wypelnienievehicle);
-                }
-                else {
+                } else {
                     updateVehicleComboTramLow();
                 }
-            }
-            else {
-                if(!wagonUstawanie.getText().isEmpty() && isNumeric(wagonUstawanie.getText())){
+            } else {
+                if (!wagonUstawanie.getText().isEmpty() && isNumeric(wagonUstawanie.getText())) {
                     wypelnienievehicle.setAll(TramRequest.getNumberTrams(Integer.parseInt(wagonUstawanie.getText())));
                     vehicleCombo.setItems(wypelnienievehicle);
-                }
-                else {
+                } else {
                     updateVehicleComboTram();
                 }
             }
@@ -427,26 +408,24 @@ public class CourseEditController implements Initializable {
         zmienLowFloorTemp();
     }
 
-    public void ustawMinStazTemp() throws UnirestException {
-        if(!stazUstawianie.getText().isEmpty() && isNumeric(stazUstawianie.getText().toString())){
+    private void ustawMinStazTemp() throws UnirestException {
+        if (!stazUstawianie.getText().isEmpty() && isNumeric(stazUstawianie.getText().toString())) {
             wypelnienieDriver.setAll(DriverRequest.getDriverswithSeniority(Integer.parseInt(stazUstawianie.getText())));
             driverCombo.setItems(wypelnienieDriver);
-        }
-        else updateDriverCombo();
+        } else updateDriverCombo();
     }
 
     public void ustawMinstaz(MouseEvent mouseEvent) throws UnirestException {
-       ustawMinStazTemp();
+        ustawMinStazTemp();
     }
 
-    public void ustwaMinWagonTemp() throws UnirestException {
-        if(tabs.getSelectionModel().getSelectedIndex() == 1){
-            if(!wagonUstawanie.getText().isEmpty() && isNumeric(wagonUstawanie.getText())){
-                if(lowFlor.isSelected()){
+    private void ustwaMinWagonTemp() throws UnirestException {
+        if (tabs.getSelectionModel().getSelectedIndex() == 1) {
+            if (!wagonUstawanie.getText().isEmpty() && isNumeric(wagonUstawanie.getText())) {
+                if (lowFlor.isSelected()) {
                     wypelnienievehicle.setAll(TramRequest.getNumberLowFloorTrams(Integer.parseInt(wagonUstawanie.getText())));
                     vehicleCombo.setItems(wypelnienievehicle);
-                }
-                else {
+                } else {
                     wypelnienievehicle.setAll(TramRequest.getNumberTrams(Integer.parseInt(wagonUstawanie.getText())));
                     vehicleCombo.setItems(wypelnienievehicle);
                 }
@@ -455,13 +434,13 @@ public class CourseEditController implements Initializable {
     }
 
     public void ustawMinWagon(MouseEvent mouseEvent) throws UnirestException {
-      ustwaMinWagonTemp();
+        ustwaMinWagonTemp();
     }
 
 
     public void selectTram(MouseEvent mouseEvent) throws UnirestException {
-        if(TramList.getSelectionModel().getSelectedItem() != null){
-            if(editMode == 1){
+        if (TramList.getSelectionModel().getSelectedItem() != null) {
+            if (editMode == 1) {
                 InCourseDTO selected = TramList.getSelectionModel().getSelectedItem();
                 vehicleCombo.getSelectionModel().select(selected.getVehicleNumber());
                 DriverDTO driver = DriverRequest.getDriver(selected.getDriverId());
@@ -472,15 +451,14 @@ public class CourseEditController implements Initializable {
                 driverCombo.getSelectionModel().select(in);
                 routeCombo.getSelectionModel().select(selected.getRouteNumber());
                 lowFlor.setSelected(selected.getLowFloorNeeded());
-            }
-            else{
+            } else {
                 InCourseDTO selected = TramList.getSelectionModel().getSelectedItem();
                 DriverDTO driver = DriverRequest.getDriver(selected.getDriverId());
                 InDriverDTO in = new InDriverDTO();
                 in.setDriverId(driver.getDriverId());
                 in.setName(driver.getName());
                 in.setSurname(driver.getSurname());
-                driverLAbel.setText("Kierowca : " +in.toString());
+                driverLAbel.setText("Kierowca : " + in.toString());
                 vehicleLAble.setText("Pojazd : " + selected.getVehicleNumber().toString());
                 routeLabel.setText("Trasa : " + selected.getRouteNumber().toString());
             }
@@ -490,7 +468,7 @@ public class CourseEditController implements Initializable {
 
     public void wybierzBus(Event event) throws UnirestException {
         updateCourseTab();
-        if(editMode == 0){
+        if (editMode == 0) {
             editCourse.setVisible(false);
             driverLAbel.setText("");
             routeLabel.setText("");
@@ -503,8 +481,7 @@ public class CourseEditController implements Initializable {
             add.setVisible(false);
             delete.setVisible(false);
             editMode = 0;
-        }
-        else{
+        } else {
             updateDriverCombo();
             updateRouteCombo();
             updateVehicleCombo();
@@ -525,7 +502,7 @@ public class CourseEditController implements Initializable {
 
     public void wybierzTram(Event event) throws UnirestException {
         updateCourseTabTram();
-        if(editMode == 0){
+        if (editMode == 0) {
             editCourse.setVisible(false);
             driverLAbel.setText("");
             routeLabel.setText("");
@@ -538,9 +515,8 @@ public class CourseEditController implements Initializable {
             add.setVisible(false);
             delete.setVisible(false);
             wagonUstawanie.setVisible(false);
-            editMode =0;
-        }
-        else {
+            editMode = 0;
+        } else {
             updateDriverCombo();
             updateRouteCombo();
             updateVehicleComboTram();
@@ -554,7 +530,7 @@ public class CourseEditController implements Initializable {
             editMode = 1;
             driverLAbel.setText("Kierowca : ");
             routeLabel.setText("Trasa : ");
-            vehicleLAble.setText("pojazd : ");
+            vehicleLAble.setText("Pojazd : ");
             wagonUstawanie.setVisible(true);
             articulated.setVisible(false);
         }
