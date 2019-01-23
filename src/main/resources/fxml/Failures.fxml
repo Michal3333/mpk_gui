@@ -4,18 +4,18 @@
 <?import javafx.scene.layout.AnchorPane?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.snoreware.mpk.guiControllers.FailuresController">
    <children>
-       <Button fx:id="button" layoutX="449.0" layoutY="255.0" mnemonicParsing="false" onAction="#zglos"
+       <Button fx:id="button" layoutX="413.0" layoutY="182.0" mnemonicParsing="false" onAction="#zglos"
                prefHeight="63.0" prefWidth="118.0" text="Zgłoś awarię"/>
-       <Label fx:id="label" layoutX="486.0" layoutY="204.0" text="Awaria"/>
-       <TabPane fx:id="tabs" layoutX="36.0" layoutY="25.0" prefHeight="355.0" prefWidth="352.0"
+       <Label fx:id="label" layoutX="449.0" layoutY="131.0" text="Awaria"/>
+       <TabPane fx:id="tabs" layoutX="36.0" layoutY="25.0" prefHeight="344.0" prefWidth="313.0"
                 tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab onSelectionChanged="#selectStop" text="Awarie Przystanków">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                         <ListView fx:id="stopsL" layoutX="5.0" layoutY="6.0" onMouseClicked="#stopsClicked"
-                                   prefHeight="309.0" prefWidth="342.0"/>
+                         <ListView fx:id="stopsL" layoutY="-4.0" onMouseClicked="#stopsClicked" prefHeight="320.0"
+                                   prefWidth="313.0"/>
                      </children>
                   </AnchorPane>
             </content>
@@ -24,23 +24,26 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ListView fx:id="busesL" onMouseClicked="#busesClicked" prefHeight="326.0" prefWidth="352.0" />
+                         <ListView fx:id="busesL" layoutY="-1.0" onMouseClicked="#busesClicked" prefHeight="313.0"
+                                   prefWidth="313.0"/>
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab onSelectionChanged="#selectTram" text="Awarie Tram">
+            <Tab onSelectionChanged="#selectTram" text="Awarie Tramwajów">
                 <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                         <children>
-                            <ListView fx:id="tramsL" onMouseClicked="#tramsClicked" prefHeight="326.0" prefWidth="352.0" />
+                            <ListView fx:id="tramsL" onMouseClicked="#tramsClicked" prefHeight="309.0"
+                                      prefWidth="313.0"/>
                         </children>
                     </AnchorPane>
                 </content>
             </Tab>
         </tabs>
       </TabPane>
-       <Button layoutX="526.0" layoutY="358.0" mnemonicParsing="false" onAction="#goHome" text="Home"/>
+       <Button layoutX="515.0" layoutY="349.0" mnemonicParsing="false" onAction="#goHome" prefHeight="35.0"
+               prefWidth="68.0" text="Home"/>
 
    </children>
 </AnchorPane>

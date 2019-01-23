@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.snoreware.mpk.guiControllers.MenuController">
    <children>
@@ -12,5 +14,11 @@
               prefWidth="131.0" text="Pracownicy"/>
       <Button layoutX="39.0" layoutY="131.0" mnemonicParsing="false" onAction="#przjdzKursy" prefHeight="95.0"
               prefWidth="131.0" text="Kursy"/>
+      <ImageView fitHeight="104.0" fitWidth="309.0" layoutX="146.0" layoutY="22.0" pickOnBounds="true"
+                 preserveRatio="true">
+         <image>
+            <Image url="@../logo.png"/>
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

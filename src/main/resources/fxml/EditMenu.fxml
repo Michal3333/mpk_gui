@@ -9,17 +9,17 @@
        <Label fx:id="label3" layoutX="378.0" layoutY="274.0"/>
        <Label fx:id="label4" layoutX="379.0" layoutY="328.0"/>
        <Label fx:id="label5" layoutX="379.0" layoutY="388.0"/>
-       <TextField fx:id="textField1" layoutX="480.0" layoutY="141.0" />
-       <TextField fx:id="textField2" layoutX="480.0" layoutY="206.0" />
-       <TextField fx:id="textField3" layoutX="480.0" layoutY="270.0" />
-       <TextField fx:id="textField4" layoutX="480.0" layoutY="324.0" />
-       <TextField fx:id="textField5" layoutX="480.0" layoutY="384.0" />
+       <TextField fx:id="textField1" layoutX="512.0" layoutY="140.0"/>
+       <TextField fx:id="textField2" layoutX="512.0" layoutY="205.0"/>
+       <TextField fx:id="textField3" layoutX="512.0" layoutY="269.0"/>
+       <TextField fx:id="textField4" layoutX="512.0" layoutY="323.0"/>
+       <TextField fx:id="textField5" layoutX="512.0" layoutY="383.0"/>
        <Button layoutX="433.0" layoutY="438.0" mnemonicParsing="false" onAction="#add" prefHeight="42.0"
                prefWidth="75.0" text="Dodaj"/>
        <Button layoutX="524.0" layoutY="438.0" mnemonicParsing="false" onAction="#update" prefHeight="42.0"
                prefWidth="91.0" text="Aktualizuj"/>
-       <CheckBox fx:id="checkBox1" layoutX="439.0" layoutY="145.0" mnemonicParsing="false" />
-       <CheckBox fx:id="checkBox2" layoutX="439.0" layoutY="210.0" mnemonicParsing="false" />
+       <CheckBox fx:id="checkBox1" layoutX="509.0" layoutY="144.0" mnemonicParsing="false"/>
+       <CheckBox fx:id="checkBox2" layoutX="509.0" layoutY="209.0" mnemonicParsing="false"/>
        <TabPane fx:id="tabs" layoutX="29.0" layoutY="30.0" prefHeight="546.0" prefWidth="261.0"
                 tabClosingPolicy="UNAVAILABLE">
         <tabs>
