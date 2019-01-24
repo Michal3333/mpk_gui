@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
-
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.snoreware.mpk.guiControllers.CourseEditController">
    <children>
        <TextField fx:id="stazUstawianie" layoutX="513.0" layoutY="317.0" />
@@ -23,8 +15,8 @@
 
        <CheckBox fx:id="articulated" layoutX="456.0" layoutY="372.0" mnemonicParsing="false" onAction="#zmienArticulated" text="Przegubowy" />
        <CheckBox fx:id="lowFlor" layoutX="456.0" layoutY="411.0" mnemonicParsing="false" onAction="#zmienLowFloor" text="Niskopodłogowy" />
-       <Label fx:id="stazInfoLable" layoutX="364.0" layoutY="321.0" text="Minimalny staz kierowcy" />
-       <Label fx:id="iloscWagnowoInfoLable" layoutX="360.0" layoutY="372.0" text="Minimalna ilosc wagonow" />
+       <Label fx:id="stazInfoLable" layoutX="346.0" layoutY="322.0" text="Minimalny staż kierowcy"/>
+       <Label fx:id="iloscWagnowoInfoLable" layoutX="338.0" layoutY="373.0" text="Minimalna liczba wagonów"/>
 
        <Button fx:id="edit" layoutX="524.0" layoutY="64.0" mnemonicParsing="false" onAction="#edit" text="Tryb edycji" />
        <Button fx:id="add" layoutX="409.0" layoutY="466.0" mnemonicParsing="false" onAction="#add" prefHeight="42.0" prefWidth="84.0" text="Dodaj" />
