@@ -39,6 +39,8 @@ public class CourseEditController implements Initializable {
     public ListView<InCourseDTO> TramList;
     public TabPane tabs;
     public TextField wagonUstawanie;
+    public Label stazInfoLable;
+    public Label iloscWagnowoInfoLable;
     private ObservableList<InCourseDTO> wypelnieniebus = FXCollections.observableArrayList();
     private ObservableList<InDriverDTO> wypelnienieDriver = FXCollections.observableArrayList();
     private ObservableList<Long> wypelnienieRoute = FXCollections.observableArrayList();
@@ -220,6 +222,7 @@ public class CourseEditController implements Initializable {
                 stazUstawianie.setVisible(true);
                 add.setVisible(true);
                 delete.setVisible(true);
+                stazInfoLable.setVisible(true);
                 editMode = 1;
                 driverLAbel.setText("Kierowca : ");
                 routeLabel.setText("Trasa : ");
@@ -227,6 +230,7 @@ public class CourseEditController implements Initializable {
                 wagonUstawanie.setVisible(false);
                 articulated.setVisible(true);
             } else {
+                stazInfoLable.setVisible(false);
                 editCourse.setVisible(false);
                 driverLAbel.setText("");
                 routeLabel.setText("");
@@ -244,6 +248,8 @@ public class CourseEditController implements Initializable {
         } else if (tabs.getSelectionModel().getSelectedIndex() == 1) {
             if (editMode == 0) {
                 editMode = 1;
+                iloscWagnowoInfoLable.setVisible(true);
+                stazInfoLable.setVisible(true);
                 updateDriverCombo();
                 updateRouteCombo();
                 updateVehicleComboTram();
@@ -261,7 +267,9 @@ public class CourseEditController implements Initializable {
                 wagonUstawanie.setVisible(true);
                 articulated.setVisible(false);
             } else {
+                iloscWagnowoInfoLable.setVisible(false);
                 editMode = 0;
+                stazInfoLable.setVisible(false);
                 editCourse.setVisible(false);
                 driverLAbel.setText("");
                 routeLabel.setText("");
@@ -338,6 +346,8 @@ public class CourseEditController implements Initializable {
             add.setVisible(false);
             delete.setVisible(false);
             editMode = 0;
+            stazInfoLable.setVisible(false);
+            iloscWagnowoInfoLable.setVisible(false);
             updateCourseTab();
         } catch (UnirestException e) {
             e.printStackTrace();
@@ -480,11 +490,16 @@ public class CourseEditController implements Initializable {
             wagonUstawanie.setVisible(false);
             add.setVisible(false);
             delete.setVisible(false);
+            iloscWagnowoInfoLable.setVisible(false);
             editMode = 0;
+            stazInfoLable.setVisible(false);
+            iloscWagnowoInfoLable.setVisible(false);
         } else {
             updateDriverCombo();
             updateRouteCombo();
             updateVehicleCombo();
+            iloscWagnowoInfoLable.setVisible(false);
+            iloscWagnowoInfoLable.setVisible(true);
             driverCombo.setVisible(true);
             vehicleCombo.setVisible(true);
             routeCombo.setVisible(true);
@@ -493,6 +508,7 @@ public class CourseEditController implements Initializable {
             wagonUstawanie.setVisible(false);
             add.setVisible(true);
             delete.setVisible(true);
+            stazInfoLable.setVisible(true);
             editMode = 1;
             driverLAbel.setText("Kierowca : ");
             routeLabel.setText("Trasa : ");
@@ -515,6 +531,7 @@ public class CourseEditController implements Initializable {
             add.setVisible(false);
             delete.setVisible(false);
             wagonUstawanie.setVisible(false);
+            stazInfoLable.setVisible(false);
             editMode = 0;
         } else {
             updateDriverCombo();
@@ -525,6 +542,7 @@ public class CourseEditController implements Initializable {
             routeCombo.setVisible(true);
             editCourse.setVisible(true);
             stazUstawianie.setVisible(true);
+            stazInfoLable.setVisible(true);
             add.setVisible(true);
             delete.setVisible(true);
             editMode = 1;

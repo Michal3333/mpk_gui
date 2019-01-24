@@ -49,6 +49,7 @@ public class FailuresController implements Initializable {
                 InStopDTO stop = stopsL.getSelectionModel().getSelectedItem();
                 StopRequest.stopFailure(stop);
                 updateStopList();
+                zmienNazwy();
             } else showAlert("Nie zaznaczono przystanku do zmiany");
         }
         else if(tab == 1){
@@ -56,6 +57,7 @@ public class FailuresController implements Initializable {
                 Long id = busesL.getSelectionModel().getSelectedItem();
                 BusRequest.busFailure(id);
                 updateBusList();
+                zmienNazwy();
             } else showAlert("Nie zaznaczono autobusu do zmiany");
         }
         else if(tab == 2){
@@ -63,10 +65,22 @@ public class FailuresController implements Initializable {
                 Long id = tramsL.getSelectionModel().getSelectedItem();
                 TramRequest.tramFailure(id);
                 updateTramList();
+                zmienNazwy();
             } else showAlert("Nie zaznaczono tramwaju do zmiany");
         }
-        button.setVisible(false);
-        label.setVisible(false);
+//        button.setVisible(false);
+//        label.setVisible(false);
+    }
+
+    private void zmienNazwy() {
+        if(label.getText() == "Awaria"){
+            label.setText("Działa");
+            button.setText("Zgłoś awarię");
+        }
+        else {
+            label.setText("Awaria");
+            button.setText("Napraw");
+        }
     }
 
     public void tramsClicked(MouseEvent mouseEvent) throws UnirestException {

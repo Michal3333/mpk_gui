@@ -196,24 +196,41 @@ public class EditMenuController implements Initializable {
     private Boolean checkContainers(int tab) {
         String blad = "";
         if (tab == 1) {
-            if (isNumeric(textField2.getText()) || textField2.getText().isEmpty())
+            if (isNumeric(textField2.getText()) || textField2.getText().isEmpty()){
                 blad += "nie podano ilosci wagonow lub podana wartość nie jest prawidlowa";
+                textField2.clear();
+            }
             if (!blad.isEmpty()) showAlert(blad);
             return blad.isEmpty();
         } else if (tab == 2) {
-            if (textField1.getText().isEmpty())
+            textField1.setText(textField1.getText().trim());
+            textField2.setText(textField2.getText().trim());
+            textField3.setText(textField3.getText().trim());
+            textField4.setText(textField4.getText().trim());
+            if (textField1.getText().isEmpty()){
                 blad += "Nie podano imienia kierowcy lub podana wartość jest niepoprawna\n";
-            if (textField2.getText().isEmpty())
+                textField1.clear();
+            }
+            if (textField2.getText().isEmpty()){
                 blad += "Nie podano nazwiska kierowcy lub podana wartość jest niepoprawna\n";
-            if (textField3.getText().isEmpty())
+                textField2.clear();
+            }
+            if (textField3.getText().isEmpty()){
                 blad += "Nie podano plci kierowcy lub podana wartość jest niepoprawna\n";
-            if (!isNumeric(textField4.getText()) || textField4.getText().isEmpty())
+                textField3.clear();
+            }
+            if (!isNumeric(textField4.getText()) || textField4.getText().isEmpty()){
                 blad += "Nie podano placy kierowcy lub podana wartość jest niepoprawna\n";
+                textField4.clear();
+            }
             if (!blad.isEmpty()) showAlert(blad);
             return blad.isEmpty();
         } else {
-            if (textField1.getText().isEmpty())
+            textField1.setText(textField1.getText().trim());
+            if (textField1.getText().isEmpty()){
                 blad += "Nie podano nazwy przystanku lub podana wartość jest niepoprawna\n";
+                textField1.clear();
+            }
             if (!blad.isEmpty()) showAlert(blad);
             return blad.isEmpty();
         }
@@ -237,6 +254,7 @@ public class EditMenuController implements Initializable {
             vehicleDTO.setLowFloor(check1);
             BusRequest.addBus(vehicleDTO);
             updateBusList();
+            clear();
         } else if (tab == 1) {
             if (checkContainers(tab)) {
                 VehicleDTO vehicleDTO = new VehicleDTO();
@@ -244,6 +262,7 @@ public class EditMenuController implements Initializable {
                 vehicleDTO.setNumberOfWagons(Integer.parseInt(labels[1]));
                 TramRequest.addTram(vehicleDTO);
                 updateTramList();
+                clear();
             }
         } else if (tab == 2) {
             if (checkContainers(tab)) {
@@ -254,6 +273,7 @@ public class EditMenuController implements Initializable {
                 driverDTO.setSalary(Float.parseFloat(labels[3]));
                 DriverRequest.addDriver(driverDTO);
                 updateDriverList();
+                clear();
             }
         } else if (tab == 3) {
             if (checkContainers(tab)) {
@@ -261,10 +281,11 @@ public class EditMenuController implements Initializable {
                 stopDTO.setStopName(labels[0]);
                 StopRequest.addStop(stopDTO);
                 updateStopList();
+                clear();
             }
 
         }
-        clear();
+
     }
 
     public void update(ActionEvent actionEvent) throws UnirestException {
@@ -287,6 +308,8 @@ public class EditMenuController implements Initializable {
                 vehicleDTO.setLowFloor(check1);
                 BusRequest.updateBus(vehicleDTO);
                 updateBusList();
+                clear();
+
             } else showAlert("Nie zaznaczono autobusu do zmiany");
 
         } else if (tab == 1) {
@@ -299,6 +322,8 @@ public class EditMenuController implements Initializable {
                     vehicleDTO.setNumberOfWagons(Integer.parseInt(labels[1]));
                     TramRequest.updateTram(vehicleDTO);
                     updateTramList();
+                    clear();
+
                 }
             } else showAlert("Nie zaznaczono tramwaju do zmiany");
         } else if (tab == 2) {
@@ -313,6 +338,8 @@ public class EditMenuController implements Initializable {
                     driverDTO.setSalary(Float.parseFloat(labels[3]));
                     DriverRequest.updateDriver(driverDTO);
                     updateDriverList();
+                    clear();
+
                 }
             } else showAlert("Nie zaznaczono kierowcy do zmiany");
 
@@ -324,11 +351,12 @@ public class EditMenuController implements Initializable {
                     stop.setStopName(labels[0]);
                     StopRequest.updateStop(stop);
                     updateStopList();
+                    clear();
+
                 }
             } else showAlert("Nie zaznaczono przystanku do zmiany");
 
         }
-        clear();
     }
 
     public void delete(ActionEvent actionEvent) throws UnirestException {
@@ -342,6 +370,8 @@ public class EditMenuController implements Initializable {
                 vehicleDTO.setVehicleNumber(id);
                 BusRequest.deleteBus(vehicleDTO);
                 updateBusList();
+                clear();
+
             } else showAlert("Nie zaznaczono tramwaju do usunięcia");
 
         } else if (tab == 1) {
@@ -351,6 +381,8 @@ public class EditMenuController implements Initializable {
                 vehicleDTO.setVehicleNumber(id);
                 TramRequest.deleteTram(vehicleDTO);
                 updateTramList();
+                clear();
+
             } else showAlert("Nie zaznaczono autobusu do usunięcia");
 
         } else if (tab == 2) {
@@ -360,6 +392,8 @@ public class EditMenuController implements Initializable {
                 driverDTO.setDriverId(driver.getDriverId());
                 DriverRequest.deleteDriver(driverDTO);
                 updateDriverList();
+                clear();
+
             } else showAlert("Nie zaznaczono kieorwcy do usunięcia");
 
         } else if (tab == 3) {
@@ -369,11 +403,12 @@ public class EditMenuController implements Initializable {
                 stopDTO.setStopId(stop.getStopId());
                 StopRequest.deleteStop(stopDTO);
                 updateStopList();
+                clear();
+
             } else showAlert("Nie zaznaczono przystanku do usunięcia");
 
         }
 
-        clear();
     }
 
     public void selectTram(Event event) {
